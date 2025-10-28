@@ -60,25 +60,9 @@
     </a>
 
     <script src="FrontEnd/scripts/index.js"></script>
+    <script src="../scripts/layout.js" defer></script>
+
 </body>
 
-<script>
-    // Function to replace {header} and {footer} placeholders
-  async function includeLayoutParts() {
-    let html = document.body.innerHTML;
 
-    // Fetch and replace {header}
-    const header = await fetch('FrontEnd/html files/header.html').then(res => res.text());
-    html = html.replace('{header}', header);
-
-    // Fetch and replace {footer}
-    const footer = await fetch('FrontEnd/html files/footer.html').then(res => res.text());
-    html = html.replace('{footer}', footer);
-
-    // Update the page content
-    document.body.innerHTML = html;
-  }
-
-  includeLayoutParts();
-</script>
 </html>

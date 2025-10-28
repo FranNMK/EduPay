@@ -6,11 +6,11 @@
 }
 
 :root {
-    --primary-color: #5d3f6a; /* Deep Purple (for text/main accents) */
-    --accent-color-pink: #e76c90; /* Pink from logo */
-    --accent-color-green: #6ace5c; /* Green/Lime from logo */
+    --primary-color: #6a3f5f; /* Deep Purple (for text/main accents) */
+    --accent-color-pink: #e76caa; /* Pink from logo */
+    --accent-color-green: #b0ce5c; /* Green/Lime from logo */
     --text-color: #333;
-    --light-bg: #f4f4f9;
+    --light-bg: #f9f4f8;
     --font-family: 'Poppins', sans-serif;
 }
 
@@ -27,7 +27,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 5%;
-    background: #fff;
+    background: lab(24.56% 45.21 -56.01);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
@@ -35,7 +35,8 @@ body {
 }
 
 .logo img {
-    height: 40px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    
 }
 
 .main-nav ul {
@@ -49,7 +50,7 @@ body {
     color: var(--primary-color);
     font-weight: 600;
     padding: 8px 15px;
-    transition: color 0.3s;
+    transition: color 0.5s;
 }
 
 .main-nav li a:hover, .main-nav li a.active {
@@ -59,7 +60,7 @@ body {
 /* CTA Button in Navbar */
 .nav-cta {
     background: linear-gradient(90deg, var(--accent-color-pink), var(--accent-color-green));
-    color: white !important;
+    color: rgb(255, 255, 255) !important;
     padding: 10px 20px;
     border-radius: 5px;
     margin-left: 20px;

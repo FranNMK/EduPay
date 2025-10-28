@@ -1,28 +1,39 @@
-// layout.js
-async function includeLayoutParts() {
-  let html = document.body.innerHTML;
+// // FrontEnd/scripts/layout.js
 
-  // Define reusable parts (you can add more later)
-  const parts = {
-    "{header}": "FrontEnd/html files/header.html",
-    "{footer}": "FrontEnd/html files/footer.html"
-  };
+// async function includeLayoutParts() {
+//   let html = document.body.innerHTML;
 
-  // Loop through each part and replace the placeholder
-  for (const [placeholder, filePath] of Object.entries(parts)) {
-    try {
-      const response = await fetch(filePath);
-      if (!response.ok) throw new Error(`Failed to load ${filePath}`);
-      const content = await response.text();
-      html = html.replace(placeholder, content);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+//   // Get the current path and normalize
+//   const currentPath = window.location.pathname.toLowerCase();
 
-  // Update the page
-  document.body.innerHTML = html;
-}
+//   // Detect if we’re inside a subfolder like /html files/ or /html-files/
+//   let basePath = "";
+//   if (currentPath.includes("html files") || currentPath.includes("html-files")) {
+//   } else {
+//     basePath = "FrontEnd/"; // for pages in the root
+//   }
 
-// Run after the page is loaded
-document.addEventListener("DOMContentLoaded", includeLayoutParts);
+//   const parts = {
+//     "{header}": `${basePath}html-files/header.html`,
+//     "{footer}": `${basePath}html-files/footer.html`
+//   };
+
+//   for (const [placeholder, filePath] of Object.entries(parts)) {
+//     try {
+//       const response = await fetch(filePath);
+//       if (!response.ok) throw new Error(`Failed to load ${filePath}`);
+//       const content = await response.text();
+//       html = html.replace(placeholder, content);
+//     } catch (error) {
+//       console.error("❌ Error loading layout part:", error);
+//       html = html.replace(
+//         placeholder,
+//         `<p style="color:red; text-align:center;">Could not load ${filePath}</p>`
+//       );
+//     }
+//   }
+
+//   document.body.innerHTML = html;
+// }
+
+// document.addEventListener("DOMContentLoaded", includeLayoutParts);

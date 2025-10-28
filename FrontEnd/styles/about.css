@@ -3,7 +3,7 @@
 
 /* Page Banner/Hero Styling */
 .page-banner {
-    background: linear-gradient(rgba(93, 63, 106, 0.8), rgba(93, 63, 106, 0.6)), url('../images/about_hero_bg.jpg'); /* Use a relevant background image */
+    background: linear-gradient(rgba(93, 63, 106, 0.8), rgba(93, 63, 106, 0.6)), url('Assets\Images\im2.jpg'); /* Use a relevant background image */
     background-size: cover;
     background-position: center;
     color: white;

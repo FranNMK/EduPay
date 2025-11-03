@@ -7,28 +7,130 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- corrected relative paths (one level up from "html files") -->
-    <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/about.css">
+    <link rel="stylesheet" href="FrontEnd\styles\style.css">
+    <link rel="stylesheet" href="FrontEnd\styles\about.css">
+
+    <style>
+        /* Page Banner/Hero Styling */
+.page-banner {
+    background: linear-gradient(rgba(93, 63, 106, 0.8), rgba(93, 63, 106, 0.6)), url('Assets\Images\im2.jpg'); /* Use a relevant background image */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 80px 5%;
+    text-align: center;
+}
+
+.page-banner h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+/* About Content Section */
+.about-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content-block {
+    flex-basis: 30%;
+    padding: 20px;
+    border-right: 1px solid #eee;
+}
+
+.content-block:last-child {
+    border-right: none;
+}
+
+.content-block h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+/* SDG Alignment Section */
+.sdg-section {
+    background-color: var(--light-bg);
+    padding: 60px 5%;
+    text-align: center;
+}
+
+.sdg-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 40px;
+}
+
+.sdg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sdg-card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-top: 5px solid var(--accent-color-green); /* Use the brand color */
+}
+
+.sdg-card h3 {
+    color: var(--accent-color-green);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Call to Action Section */
+.cta-section {
+    text-align: center;
+    padding: 50px 5%;
+}
+
+.cta-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+}
+
+.secondary-cta {
+    background: none;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    margin-left: 20px;
+}
+
+.secondary-cta:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Mobile Responsiveness for About Page */
+@media (max-width: 768px) {
+    .about-content, .sdg-grid {
+        flex-direction: column;
+        display: block;
+    }
+    
+    .content-block {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 20px;
+    }
+
+    .cta-section a {
+        display: block;
+        margin: 10px 0;
+    }
+}
+    </style>
 </head>
 <body>
     
-   <header class="main-header">
-        <div class="logo">
-            <img src="Assets\Images\logo edu pay.jpg" alt="EduPay Logo">
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="FrontEnd\html-files\About.html">About</a></li>
-                <li><a href="FrontEnd\html-files\Faqs.html">FAQ'S</a></li>
-                <li><a href="FrontEnd\html-files\privacy.html">Privacy Policy</a></li>
-                <li><a href="FrontEnd\html-files\contact.html">Contact Us</a></li>
-                <li><a href="FrontEnd\html-files\pay-fees.html" class="cta-button nav-cta">Pay Fees</a></li>
-            </ul>
-        </nav>\
-        <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
-    </header>
-
+ 
 
 
     <main>
@@ -40,17 +142,17 @@
         <section class="about-content">
             <div class="content-block">
                 <h2>Our Mission</h2>
-                <p>To provide a **seamless, secure, and transparent digital finance solution** for the education sector, ensuring that school fees payment is never a barrier to quality learning.</p>
+                <p>To provide a seamless, secure, and transparent digital finance solution for the education sector, ensuring that school fees payment is never a barrier to quality learning.</p>
             </div>
             
             <div class="content-block">
                 <h2>Our Vision</h2>
-                <p>To be the leading, most trusted platform for education payments in Africa, fostering **financial inclusion and administrative efficiency** for every institution.</p>
+                <p>To be the leading, most trusted platform for education payments in Africa, fostering financial inclusion and administrative efficiency for every institution.</p>
             </div>
             
             <div class="content-block target-audience">
                 <h2>Who We Serve</h2>
-                <p>EduPay is designed for **Parents, Students, and Sponsors** looking for easy payment methods, and **Educational Institutions** (schools, colleges) seeking real-time tracking and financial transparency.</p>
+                <p>EduPay is designed for **Parents, Students, and Sponsors looking for easy payment methods, and Educational Institutions (schools, colleges) seeking real-time tracking and financial transparency.</p>
             </div>
         </section>
         
@@ -67,7 +169,7 @@
                 </div>
                 <div class="sdg-card">
                     <h3>SDG 16: Peace, Justice & Strong Institutions</h3>
-                    <p>Our real-time tracking and digital audit trails enhance **financial transparency** and accountability within institutions.</p>
+                    <p>Our real-time tracking and digital audit trails enhance financial transparency and accountability within institutions.</p>
                 </div>
             </div>
         </section>
@@ -80,22 +182,7 @@
 
     </main>
 
-   <footer class="main-footer">
-            <div class="footer-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="FrontEnd/html files/About.html">About</a>
-                <a href="FrontEnd\html-files\Faqs.html">FAQ'S</a>
-                <a href="FrontEnd\html-files\privacy.html">Privacy Policy</a>
-                <a href="FrontEnd\html-files\contact.html">Contact Us</a>
-                <a href="FrontEnd\html-files\pay-fees.html" class="cta-button nav-cta">Pay Fees</a>
-            </div>
-            <div class="social-links">
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-            <p>&copy; 2025 EduPay. All rights reserved. </p>
-    </footer>
+   
     
     <a href="https://wa.me/254710271048" class="whatsapp-fixed" target="_blank" aria-label="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>

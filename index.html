@@ -4,28 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPay - Empowering Education Through Digital Payments</title>
+    <link rel="shortcut icon" href="Assets\Images\image 1.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="FrontEnd\styles\style.css">
+    <script type="module" src="FrontEnd\scripts\templating-practise\templating.js"></script>
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="logo">
-            <img src="Assets\Images\logo edu pay.jpg" alt="EduPay Logo">
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="FrontEnd/html files/About.html">About</a></li>
-                <li><a href="FrontEnd\html-files\Faqs.html">FAQ'S</a></li>
-                <li><a href="FrontEnd\html-files\privacy.html">Privacy Policy</a></li>
-                <li><a href="FrontEnd\html-files\contact.html">Contact Us</a></li>
-                <li><a href="FrontEnd\html-files\pay-fees.html" class="cta-button nav-cta">Pay Fees</a></li>
-            </ul>
-        </nav>\
-        <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
-    </header>
+    <my-header></my-header>
 
    
     <main>
@@ -68,22 +55,7 @@
             </div>
         </section>
 
-       <footer class="main-footer">
-            <div class="footer-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="FrontEnd/html files/About.html">About</a>
-                <a href="FrontEnd\html-files\Faqs.html">FAQ'S</a>
-                <a href="FrontEnd\html-files\privacy.html">Privacy Policy</a>
-                <a href="FrontEnd\html-files\contact.html">Contact Us</a>
-                <a href="FrontEnd\html-files\pay-fees.html" class="cta-button nav-cta">Pay Fees</a>
-            </div>
-            <div class="social-links">
-                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-            <p>&copy; 2025 EduPay. All rights reserved. </p>
-        </footer>
+       <my-footer></my-footer>
     </main>
 
     <a href="https://wa.me/254710217048" class="whatsapp-fixed" target="_blank" aria-label="Chat on WhatsApp">

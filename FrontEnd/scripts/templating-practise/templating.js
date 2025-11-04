@@ -46,4 +46,15 @@ class MyFooter extends HTMLElement {
     }
 }
 
-customElements.define('my-footer', MyFooter);
+customElements.define('my-whatapp', MyFooter);
+class MyWhatapp extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+           <a href="https://wa.me/254710217048" class="whatsapp-fixed" target="_blank" aria-label="Chat on WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        `;
+    }
+}
+
+customElements.define('my-whatapp', MyWhatapp);

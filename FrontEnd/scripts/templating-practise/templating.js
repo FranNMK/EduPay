@@ -29,7 +29,7 @@ class MyFooter extends HTMLElement {
             <footer class="main-footer">
                 <div class="footer-links">
                     <a href="index.html" class="active">Home</a>
-                    <a href="FrontEnd/html files/About.html">About</a>
+                    <a href="FrontEnd/html-files/About.html">About</a>
                     <a href="FrontEnd\html-files\Faqs.html">FAQ'S</a>
                     <a href="FrontEnd\html-files\privacy.html">Privacy Policy</a>
                     <a href="FrontEnd\html-files\contact.html">Contact Us</a>

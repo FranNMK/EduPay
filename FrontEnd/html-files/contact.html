@@ -11,23 +11,7 @@
  </head>
 <body>
     
-    <header class="main-header">
-        <div class="logo">
-            <img src="Assets\Images\logo edu pay.jpg" alt="EduPay Logo">
-        </div>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="FrontEnd/html files/About.html">About</a></li>
-                <li><a href="FrontEnd\html-files\Faqs.html">FAQ'S</a></li>
-                <li><a href="FrontEnd\html-files\privacy.html">Privacy Policy</a></li>
-                <li><a href="FrontEnd\html-files\contact.html">Contact Us</a></li>
-                <li><a href="FrontEnd\html-files\pay-fees.html" class="cta-button nav-cta">Pay Fees</a></li>
-            </ul>
-        </nav>\
-        <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
-    </header>
-
+    <my-header></my-header>
 
     <main>
         <section class="page-banner contact-banner">
@@ -123,5 +107,7 @@
             setTimeout(() => { status.textContent = ''; }, 5000);
         });
     </script>
+
+    <script type="module" src="FrontEnd/scripts/templating-practise/templating.js"></script>
 </body>
 </html>

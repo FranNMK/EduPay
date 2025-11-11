@@ -1,7 +1,7 @@
 /* Basic Reset and Variables */
 * {
-    margin: 0;
-    padding: 0;
+    margin: 15;
+    padding: 5;
     box-sizing: border-box;
 }
 
@@ -19,6 +19,7 @@ body {
     line-height: 1.6;
     color: var(--text-color);
     background-color: #fff;
+    
 }
 
 /* === 1. Navigation Bar (Header) Styling === */

@@ -7,7 +7,7 @@ class MyHeader extends HTMLElement {
         const pagesPath = isSubfolder ? '' : 'FrontEnd/html-files/';
 
         this.innerHTML = `
-            <header class="main-header">
+            <div class="header-container"><header class="main-header">
                 <div class="logo">
                     <!-- Use the dynamic path for the logo -->
                     <a href="${basePath}index.html"><img src="${assetsPath}Images/logo edu pay.jpg" alt="EduPay Logo"></a>
@@ -23,8 +23,8 @@ class MyHeader extends HTMLElement {
                         <li><a href="${pagesPath}pay-fees.html" class="cta-button nav-cta">Pay Fees</a></li>
                     </ul>
                 </nav>
-                <button class="menu-toggle" aria-label="Toggle navigation">&#9776;</button>
-            </header>
+                <button class="menu-toggle" aria-label="Toggle navigation"  aria-expanded="false" aria-controls="main-nav"><span></span></button>
+            </header></div>
         `;
 
         // --- Logic to highlight the active navigation link ---
@@ -44,6 +44,19 @@ class MyHeader extends HTMLElement {
                 }
             }
         });
+
+        // Mobile menu toggle functionality
+        const menuToggle = this.querySelector('.menu-toggle');
+        const mainNav = this.querySelector('.main-nav');
+
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+            mainNav.classList.toggle('open');
+            menuToggle.classList.toggle('open');
+        });
+
+
     }
 }
 

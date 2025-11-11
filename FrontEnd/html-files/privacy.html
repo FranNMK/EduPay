@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPay - Privacy Policy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Corrected relative paths for stylesheets -->
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/privacy.css">
+    <script type="module" src="../scripts/templating-practise/templating.js"></script>
+</head>
+<body>
+    
+    <my-header></my-header>
+
+    <main>
+        <section class="page-banner privacy-banner">
+            <h1>EduPay Privacy Policy</h1>
+            <p>Your security and data protection are our top priorities.</p>
+            <p class="last-updated">Last Updated: October 2025</p>
+        </section>
+
+        <section class="privacy-content-grid">
+            
+            <aside class="toc">
+                <button class="toc-toggle" aria-expanded="false" aria-controls="toc-link-list">
+                    <h2>Contents</h2>
+                </button>
+                <ul id="toc-link-list">
+                    <li><a href="#introduction">1. Introduction & Compliance</a></li>
+                    <li><a href="#collection">2. Information We Collect</a></li>
+                    <li><a href="#use">3. How We Use Your Information</a></li>
+                    <li><a href="#sharing">4. Sharing and Disclosure</a></li>
+                    <li><a href="#security">5. Data Security (Tech Stack)</a></li>
+                    <li><a href="#rights">6. Your Rights (DPA)</a></li>
+                    <li><a href="#contact">7. Contact Us</a></li>
+                </ul>
+            </aside>
+
+            <article class="policy-text">
+                
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="introduction" class="section-heading">1. Introduction & Compliance</h2></button>
+                    <div class="policy-body">
+                        <p>EduPay is committed to protecting your personal data in compliance with the <strong>Kenya Data Protection Act, 2019</strong>. This policy explains how we collect, use, and share your information when you use our school fees payment platform.</p>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="collection" class="section-heading">2. Information We Collect</h2></button>
+                    <div class="policy-body">
+                        <p>We collect data necessary to process payments and maintain service integrity.</p>
+                        <h3>2.1 Identity and Contact Data</h3>
+                        <ul>
+                            <li><strong>Parent/Sponsor/Student Name:</strong> For account identification.</li>
+                            <li><strong>Phone Number & Email:</strong> Essential for OTP verification, digital receipts, and M-Pesa transactions.</li>
+                        </ul>
+                        <h3>2.2 Financial and Transaction Data</h3>
+                        <ul>
+                            <li><strong>Amount Paid, Date, Transaction ID:</strong> Stored in our <strong>MongoDB</strong> database for audit trails.</li>
+                            <li><strong>School/Admission Number:</strong> Used to link the payment to the correct student account.</li>
+                        </ul>
+                        <h3>2.3 Technical Data</h3>
+                        <p>Collected via <strong>Node.js/Express</strong> logs: IP address, browser type, device information, and usage timestamps for security and performance analysis.</p>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="use" class="section-heading">3. How We Use Your Information</h2></button>
+                    <div class="policy-body">
+                        <p>We process your data based on the necessity for contract performance (fee payment) and legitimate interest (security).</p>
+                        <ul>
+                            <li>To process and verify school fee payments via <strong>M-Pesa API</strong>.</li>
+                            <li>To generate and send digital receipts (Email/WhatsApp).</li>
+                            <li>To maintain account security using <strong>JWT and bcrypt</strong> authentication.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="sharing" class="section-heading">4. Sharing and Disclosure</h2></button>
+                    <div class="policy-body">
+                        <p>We only share data with necessary parties:</p>
+                        <ul>
+                            <li><strong>Educational Institutions:</strong> Transaction details are shared with your designated school for reconciliation purposes.</li>
+                            <li><strong>Payment Gateways:</strong> Necessary financial data is shared with M-Pesa and bank processors to execute the payment.</li>
+                            <li><strong>Legal Compliance:</strong> When required by law or the <strong>Office of the Data Protection Commissioner (ODPC)</strong> in Kenya.</li>
+                        </ul>
+                        <p class="warning"><strong>We do not sell your personal data to third parties for marketing purposes.</strong></p>
+                    </div>
+                </div>
+                
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="security" class="section-heading">5. Data Security (Tech Stack)</h2></button>
+                    <div class="policy-body">
+                        <p>We use strong security measures across our stack:</p>
+                        <ul>
+                            <li><strong>Database:</strong> Data stored in <strong>MongoDB Atlas</strong> is secured with access controls and encryption.</li>
+                            <li><strong>In Transit:</strong> All data transmission uses <strong>SSL/TLS encryption</strong>.</li>
+                            <li><strong>Authentication:</strong> User credentials are never stored in plain text; we use <strong>bcrypt</strong> hashing.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="rights" class="section-heading">6. Your Rights (DPA)</h2></button>
+                    <div class="policy-body">
+                        <p>Under the Data Protection Act, 2019, you have the right to access, rectify, or object to the processing of your data. Contact us to exercise these rights.</p>
+                    </div>
+                </div>
+
+                <div class="policy-section">
+                    <button class="policy-header"><h2 id="contact" class="section-heading">7. Contact Us</h2></button>
+                    <div class="policy-body">
+                        <p>For any questions regarding this policy, please contact us at:</p>
+                        <p>Email: privacy@edupay.com | Phone: +254 7XX XXX XXX</p>
+                    </div>
+                </div>
+
+            </article>
+        </section>
+
+    </main>
+
+    <my-footer></my-footer>
+    <my-whatapp></my-whatapp>
+
+    <script src="../scripts/privacy.js"></script>
+</body>
+</html>

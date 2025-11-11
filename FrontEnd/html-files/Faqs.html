@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPay - Frequently Asked Questions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Corrected relative paths for stylesheets -->
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/faqs.css">
+    <script type="module" src="../scripts/templating-practise/templating.js"></script>
+</head>
+
+<body>
+
+    <my-header></my-header>
+
+    <main>
+        <section class="page-banner faqs-banner">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find quick answers about payments, security, and school onboarding.</p>
+        </section>
+
+        <section class="faqs-section">
+            <h2 class="section-heading">Payment and Transaction Queries</h2>
+            <div class="accordion-container">
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        What payment methods are supported?
+                    </button>
+                    <div class="accordion-content">
+                        <p>EduPay supports M-Pesa (PayBill/Lipa na M-Pesa), Bank Transfers, and **Card Payments.
+                            We aim to give you flexibility for your convenience.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        How long does it take for a payment to reflect?
+                    </button>
+                    <div class="accordion-content">
+                        <p>Payments processed via M-Pesa or Card are typically real-time or reflect within minutes.
+                            You will receive an instant digital receipt as confirmation.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        What if my transaction fails or I get an error?
+                    </button>
+                    <div class="accordion-content">
+                        <p>If the amount was deducted but no receipt was issued, **do not attempt a second payment.
+                            Contact our support team immediately via WhatsApp or our Contact Form with your M-Pesa
+                            transaction code for verification.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        How do I view my payment history and receipts?
+                    </button>
+                    <div class="accordion-content">
+                        <p>Once logged into your Parent/Sponsor Dashboard, navigate to the "Fees Management"
+                            section to view all past transactions and download digital receipts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-heading">Account and Platform Use</h2>
+            <div class="accordion-container">
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        I forgot my login details. How do I recover my account?
+                    </button>
+                    <div class="accordion-content">
+                        <p>On the login page, use the "Request OTP" feature with your registered phone number or
+                            email. A One-Time Password will be sent to securely verify your identity and grant access.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        Can I pay fees for more than one student/school?
+                    </button>
+                    <div class="accordion-content">
+                        <p>Yes. Your Parent/Sponsor Dashboard is designed to link multiple students across different
+                            institutions, allowing you to manage all payments from a single, centralized account.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-heading">For Schools and Institutions</h2>
+            <div class="accordion-container">
+                <div class="accordion-item">
+                    <button class="accordion-header" aria-expanded="false">
+                        How does our school register for EduPay?
+                    </button>
+                    <div class="accordion-content">
+                        <p>Please use our <strong>Contact Us</strong> page to reach our onboarding team. We will arrange a quick
+                            setup of your school's account, PayBill/A/C details, and provide you with access to the
+                            <strong>Admin Dashboard</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <my-footer></my-footer>
+    <my-whatapp></my-whatapp>
+
+    <!-- Corrected path for the faqs script -->
+    <script src="../scripts/faqs.js"></script>
+</body>
+
+</html>

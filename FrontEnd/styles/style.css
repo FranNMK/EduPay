@@ -1,7 +1,7 @@
 /* Basic Reset and Variables */
 * {
-    margin: 15;
-    padding: 5;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -22,6 +22,13 @@ body {
     
 }
 
+/* New container to handle sticky positioning reliably */
+.header-container {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
 /* === 1. Navigation Bar (Header) Styling === */
 .main-header {
     display: flex;
@@ -32,9 +39,6 @@ body {
     border-bottom-left-radius: 15px; /* Added border-radius */
     border-bottom-right-radius: 15px; /* Added border-radius */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Adjusted shadow for dark bg */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
 }
 
 .logo img {
@@ -109,8 +113,42 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
     color: #ffffff; /* Change hamburger color to white */
+    position: relative;
+    width: 30px;
+    height: 25px;
 }
 
+/* Create the hamburger lines using a span and pseudo-elements */
+.menu-toggle span,
+.menu-toggle::before,
+.menu-toggle::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle::before { top: 0; }
+.menu-toggle span { top: 11px; }
+.menu-toggle::after { bottom: 0; }
+
+/* Transform the icon to an 'X' when open */
+.menu-toggle.open::before {
+    transform: rotate(45deg);
+    top: 11px;
+}
+
+.menu-toggle.open span {
+    opacity: 0; /* Hide the middle line */
+}
+
+.menu-toggle.open::after {
+    transform: rotate(-45deg);
+    bottom: 11px;
+}
 
 /* === 2. Hero Section & Image Slider Styling === */
 .hero-section {
@@ -353,12 +391,14 @@ body {
 @media (max-width: 992px) {
     .main-nav {
         display: none; /* Hide navigation links on smaller screens */
+        /* Use fixed positioning to ensure it's on top of everything */
+        position: fixed;
         width: 100%;
-        position: absolute;
-        top: 70px; /* Below the header */
+        top: 110px; /* Adjust based on your header height */
         left: 0;
         background: #fff;
         box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        z-index: 999; /* Below the main header container */
     }
     
     .main-nav.open {
@@ -384,6 +424,7 @@ body {
     .main-nav li a {
         display: block;
         padding: 15px;
+        color: var(--primary-color); /* Make text visible on white background */
     }
 
     .menu-toggle {

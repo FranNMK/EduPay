@@ -1,9 +1,6 @@
-/* Import main styles to inherit variables and core structure */
-@import url('style.css');
-
 /* Page Banner/Hero Styling */
 .page-banner {
-    background: linear-gradient(rgba(93, 63, 106, 0.8), rgba(93, 63, 106, 0.6)), url('Assets\Images\im2.jpg'); /* Use a relevant background image */
+    background: linear-gradient(rgba(93, 63, 106, 0.8), rgba(93, 63, 106, 0.6)), url('../../Assets/Images/im2.jpg'); /* Use a relevant background image */
     background-size: cover;
     background-position: center;
     color: white;
@@ -27,8 +24,13 @@
 
 .content-block {
     flex-basis: 30%;
-    padding: 20px;
+    padding: 30px;
     border-right: 1px solid #eee;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid var(--primary-color);
 }
 
 .content-block:last-child {
@@ -39,6 +41,61 @@
     color: var(--primary-color);
     margin-bottom: 15px;
     font-weight: 700;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 8px;
+    transition: text-shadow 0.3s ease;
+}
+
+.content-block h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px; /* Shorter underline for smaller headings */
+    height: 3px;
+    background: var(--accent-color-pink);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-color-pink); /* Subtle glow */
+}
+
+.content-block h2:hover {
+    text-shadow: 0 0 8px rgba(106, 63, 95, 0.5); /* Subtle text glow */
+}
+
+/* Common style for all section headings on this page */
+.sdg-section h2,
+.cta-section h2 {
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+    margin-bottom: 40px;
+    transition: text-shadow 0.3s ease;
+}
+
+.sdg-section h2::after,
+.cta-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: var(--accent-color-pink);
+    border-radius: 2px;
+    box-shadow: 0 0 15px var(--accent-color-pink);
+}
+
+.sdg-section h2:hover,
+.cta-section h2:hover {
+    text-shadow: 0 0 10px rgba(106, 63, 95, 0.6);
+}
+
+.content-block:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(106, 63, 95, 0.15), 0 0 20px rgba(106, 63, 95, 0.1); /* Glowing effect */
 }
 
 /* SDG Alignment Section */
@@ -46,11 +103,6 @@
     background-color: var(--light-bg);
     padding: 60px 5%;
     text-align: center;
-}
-
-.sdg-section h2 {
-    color: var(--primary-color);
-    margin-bottom: 40px;
 }
 
 .sdg-grid {
@@ -66,7 +118,13 @@
     padding: 25px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    border-top: 5px solid var(--accent-color-green); /* Use the brand color */
+    border-top: 5px solid var(--accent-color-green);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sdg-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(176, 206, 92, 0.2), 0 0 20px rgba(176, 206, 92, 0.15); /* Green glowing effect */
 }
 
 .sdg-card h3 {
@@ -81,13 +139,16 @@
     padding: 50px 5%;
 }
 
-.cta-section h2 {
-    color: var(--primary-color);
-    margin-bottom: 25px;
-}
-
 .secondary-cta {
     background: none;
+    /* Inherit properties from the main CTA for consistency */
+    padding: 13px 38px; /* Slightly smaller than the primary button */
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: inline-block; /* Ensures padding and margins are applied correctly */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
     margin-left: 20px;

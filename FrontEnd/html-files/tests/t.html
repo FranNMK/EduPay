@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+
+    }
+
+    .card-tittle {
+        color: #e74c3c;
+        font-size: 1.8rem;
+        font-weight: 600px;
+        margin-bottom: 0.5rem;
+
+    }
+
+    .card-text {
+        font-size: 1.2rem;
+        line-height: 1.6rem;
+        color: greenyellow;
+
+    }
+
+    .card {
+        position: relative;
+        max-width: 350px;
+        max-height: 400PX;
+        background-color: #165564;
+        border-radius: 15PX;
+        padding: 2em;
+        text-decoration: none;
+        z-index: 0;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    }
+
+    .card::before {
+        content: '';
+        position: relative;
+        z-index: -1;
+        top: -20px;
+        right: -20px;
+        background: linear-gradient(135deg, #00ec62, #00722);
+        height: 40px;
+        width: 40;
+        border-radius: 50%;
+        transform: scale(1);
+        transform-origin: 50% 50%;
+        transition: transform0.3s ease-in-out;
+    }
+
+    .card:hover::before {
+        transform: scale(28);
+
+    }
+
+    .card:hover .card-tittle ,
+    .card:hover .card-text {
+        color: #2c3e5;
+    }
+</style>
+
+<body>
+    <div class="card">
+        <h1 class="card-ttile">Our Mission</h1>
+        <p class="card-content">
+            To provide a seamless, secure, and transparent digital finance solution for the education sector.
+        </p>
+    </div>
+</body>
+
+</html>

@@ -27,9 +27,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 5%;
-    background: lab(24.56% 45.21 -56.01);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 10px 5%;
+    background: var(--primary-color); /* Use the primary dark color */
+    border-bottom-left-radius: 15px; /* Added border-radius */
+    border-bottom-right-radius: 15px; /* Added border-radius */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Adjusted shadow for dark bg */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -48,10 +50,11 @@ body {
 
 .main-nav li a {
     text-decoration: none;
-    color: var(--primary-color);
+    color: #ffffff; /* Change link color to white for contrast */
     font-weight: 600;
     padding: 8px 15px;
-    transition: color 0.5s;
+    position: relative; /* Needed for the underline effect */
+    transition: color 0.3s, transform 0.3s ease; /* Smooth transitions */
 }
 
 .main-nav li a:hover, .main-nav li a.active {
@@ -59,6 +62,26 @@ body {
 }
 
 /* CTA Button in Navbar */
+.main-nav li a:hover {
+    transform: scale(1.1); /* "Growing" effect on hover */
+}
+
+/* Underline effect for hover and active states */
+.main-nav li a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 15px;
+    right: 15px;
+    height: 3px;
+    background: var(--accent-color-pink);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-color-pink), 0 0 5px var(--accent-color-pink); /* Glowing effect */
+    transform: scaleX(0); /* Initially hidden */
+    transition: transform 0.3s ease-out; /* Smooth transition for the underline */
+    transform-origin: center;
+}
+
 .nav-cta {
     background: linear-gradient(90deg, var(--accent-color-pink), var(--accent-color-green));
     color: rgb(255, 255, 255) !important;
@@ -73,6 +96,11 @@ body {
     opacity: 0.9;
 }
 
+/* Show the underline on hover or when the link is active */
+.main-nav li a:hover::after, .main-nav li a.active::after {
+    transform: scaleX(1);
+}
+
 /* Hamburger Menu (Hidden on Desktop) */
 .menu-toggle {
     display: none;
@@ -80,7 +108,7 @@ body {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: var(--primary-color);
+    color: #ffffff; /* Change hamburger color to white */
 }
 
 
@@ -182,10 +210,33 @@ body {
     background-color: var(--light-bg);
 }
 
-.essence-section h2 {
-    font-size: 2rem;
-    margin-bottom: 40px;
+/* New Reusable Class for Section Headings */
+.section-heading {
+    font-size: 2.2rem;
+    margin-bottom: 60px;
     color: var(--primary-color);
+    position: relative; /* For positioning the underline */
+    display: inline-block; /* To contain the underline */
+    padding-bottom: 15px; /* Space for the underline */
+    transition: text-shadow 0.3s ease;
+    font-weight: 700;
+}
+
+.section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--accent-color-pink);
+    border-radius: 2px;
+    box-shadow: 0 0 15px var(--accent-color-pink); /* Glowing underline */
+}
+
+.section-heading:hover {
+    text-shadow: 0 0 10px rgba(106, 63, 95, 0.6); /* Glowing text on hover */
 }
 
 .feature-grid {
@@ -200,13 +251,15 @@ body {
     background: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 4px solid var(--accent-color-pink); /* Pink accent border */
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    /* Glowing effect using pink accent color */
+    box-shadow: 0 10px 25px rgba(231, 108, 170, 0.15), 0 0 20px rgba(231, 108, 170, 0.1);
 }
 
 .feature-card h3 {
@@ -228,14 +281,34 @@ body {
 .footer-links a {
     color: white;
     text-decoration: none;
-    margin: 0 15px;
-    opacity: 0.8;
-    transition: opacity 0.3s;
+    margin: 0 10px;
+    padding: 5px;
+    position: relative; /* Required for the underline pseudo-element */
+    transition: color 0.3s;
 }
 
 .footer-links a:hover {
-    opacity: 1;
-    text-decoration: underline;
+    color: var(--accent-color-pink); /* Change color on hover */
+}
+
+/* Glowing underline effect for footer links */
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 5px;
+    right: 5px;
+    height: 2px; /* A slightly thinner underline for the footer */
+    background: var(--accent-color-pink);
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--accent-color-pink); /* Subtle glow */
+    transform: scaleX(0);
+    transition: transform 0.3s ease-out;
+    transform-origin: center;
+}
+
+.footer-links a:hover::after {
+    transform: scaleX(1); /* Show underline on hover */
 }
 
 .social-links {

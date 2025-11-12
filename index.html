@@ -27,7 +27,7 @@
             </div>
             <h1>Empowering Education Through Digital Payments</h1>
             <p class="mission-vision">Our Mission: To provide a seamless, secure, and transparent digital finance solution for the education sector.</p>
-            <button class="cta-button large-cta" onclick="showAuthModal('login')">Get Started Today!</button>
+            <button class="cta-button large-cta login-register-btn">Get Started Today!</button>
         </div>
     </section>
 
@@ -63,103 +63,11 @@
         <a href="FrontEnd/html-files/contact.html" class="cta-button large-cta secondary-cta">Contact Sales Team</a>
     </section>
 
-    <footer>
-        <p>&copy; 2025 EduPay. All rights reserved. | Built in Kenya 🇰🇪</p>
-    </footer>
+    <my-footer></my-footer>
+    <my-whatapp></my-whatapp>
+    <auth-modal></auth-modal>
 
-    <div id="auth-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeAuthModal()">&times;</span>
-
-            <div class="modal-header">
-                <h2 id="modal-title">Welcome to EduPay</h2>
-                <div class="role-selector">
-                    <button class="role-btn active" data-role="parent"
-                        onclick="selectRole('parent')">Parent/Student</button>
-                    <button class="role-btn" data-role="admin" onclick="selectRole('admin')">School Admin</button>
-                </div>
-            </div>
-
-            <div class="auth-box">
-                <form id="login-form" class="auth-form active-form">
-                    <h3>Login to Your Account</h3>
-
-                    <div class="form-group">
-                        <label for="login-email">Email Address</label>
-                        <input type="email" id="login-email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" required>
-                    </div>
-
-                    <button type="submit" class="large-cta">Login</button>
-                    <p class="auth-switch">Don't have an account? <a href="#" onclick="switchForm('register')">Register
-                            Here</a></p>
-                    <p id="login-status" class="status-message"></p>
-                </form>
-
-                <form id="register-form" class="auth-form">
-                    <h3>Create a Parent/Student Account</h3>
-
-                    <div class="form-group">
-                        <label for="reg-name">Full Name</label>
-                        <input type="text" id="reg-name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-phone">Phone Number (M-Pesa registered)</label>
-                        <input type="tel" id="reg-phone" pattern="^\+254[0-9]{9}$" placeholder="+2547XXXXXXXX" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-email">Email Address</label>
-                        <input type="email" id="reg-email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-password">Password</label>
-                        <input type="password" id="reg-password" required>
-                    </div>
-
-                    <button type="submit" class="large-cta">Register & Verify Phone</button>
-                    <p class="auth-switch">Already registered? <a href="#" onclick="switchForm('login')">Login Here</a>
-                    </p>
-                    <p id="register-status" class="status-message"></p>
-                </form>
-
-                <form id="otp-form" class="auth-form">
-                    <h3>Verify Your Phone Number</h3>
-                    <p>An OTP has been sent to <span id="otp-phone-display"></span>. Enter it below to complete
-                        registration.</p>
-
-                    <div class="form-group">
-                        <label for="otp-code">Verification Code</label>
-                        <input type="text" id="otp-code" pattern="\d{6}" maxlength="6" required>
-                    </div>
-
-                    <button type="submit" class="large-cta accent-pink-bg">Verify Account</button>
-                    <p class="auth-switch"><a href="#" onclick="resendOtp()">Resend Code</a></p>
-                    <p id="otp-status" class="status-message"></p>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script src="FrontEnd/scripts/landing.js"></script>
     <script src="FrontEnd/scripts/index.js"></script>
-
-    <script>
-        // Add click listener for the new "Login / Register" button from the header component
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.addEventListener('click', function(event) {
-                if (event.target.matches('.login-register-btn')) {
-                    showAuthModal('login');
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

@@ -97,6 +97,27 @@ my-header {
     transition: opacity 0.3s;
 }
 
+.cta-button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    font-family: var(--font-family); /* Ensure font consistency */
+}
+
+.small-cta {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    background-color: var(--accent-color-pink);
+    color: white !important; /* Override any link colors */
+}
+
+.small-cta:hover {
+    background-color: #e04a79; /* A slightly darker pink for hover */
+    transform: translateY(-1px);
+}
+
 .nav-cta:hover {
     opacity: 0.9;
 }

@@ -85,17 +85,17 @@ document.getElementById('login-form')?.addEventListener('submit', (e) => {
 
 document.getElementById('register-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const phone = document.getElementById('reg-phone').value;
     const status = document.getElementById('register-status');
-    status.textContent = 'Registering...';
+    status.textContent = 'Submitting your request...';
     status.style.color = 'var(--color-pending)';
     status.style.display = 'block';
 
-    // Simulate API call
+    // Simulate sending the request
     setTimeout(() => {
-        // On success, switch to OTP form
-        document.getElementById('otp-phone-display').textContent = phone;
-        switchForm('otp');
+        status.textContent = 'Request received! Our team will contact you shortly.';
+        status.style.color = 'var(--color-success)';
+        // Optionally, switch back to login after a delay
+        setTimeout(() => switchForm('login'), 3000);
     }, 1500);
 });
 

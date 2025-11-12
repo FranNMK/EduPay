@@ -77,7 +77,7 @@ class MyFooter extends HTMLElement {
                     <a href="${pagesPath}Faqs.html">FAQ'S</a>
                     <a href="${pagesPath}privacy.html">Privacy Policy</a>
                     <a href="${pagesPath}contact.html">Contact Us</a>
-                    <a href="${pagesPath}dasbboard/dash_pare.html" class="cta-button nav-cta">Pay Fees</a>
+                    <a href="${basePath}Backend/frontend/index.html" class="cta-button nav-cta">Pay Fees</a>
                 </div>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -91,6 +91,139 @@ class MyFooter extends HTMLElement {
 }
 
 customElements.define('my-footer', MyFooter);
+
+class AuthModal extends HTMLElement {
+    connectedCallback() {
+        this.innerHTML = `
+            <div id="auth-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <div class="modal-header">
+                        <h2 id="modal-title">Welcome to EduPay</h2>
+                        <div class="role-selector">
+                            <button class="role-btn active" data-role="parent">Parent/Student</button>
+                            <button class="role-btn" data-role="admin">School Admin</button>
+                        </div>
+                    </div>
+                    <div class="auth-box">
+                        <form id="login-form" class="auth-form">
+                            <h3>Login to Your Account</h3>
+                            <div class="form-group">
+                                <label for="login-email">Email Address</label>
+                                <input type="email" id="login-email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" required>
+                            </div>
+                            <button type="submit" class="large-cta">Login</button>
+                            <p class="auth-switch">Don't have an account? <a href="#" class="switch-to-register">Request Registration</a></p>
+                            <p id="login-status" class="status-message"></p>
+                        </form>
+                        <form id="register-form" class="auth-form">
+                            <h3>Request Registration</h3>
+                            <p style="text-align: center; font-size: 0.9rem; margin-bottom: 15px;">Submit your details and our team will create your account and contact you.</p>
+                            <div class="form-group">
+                                <label for="reg-name">Full Name</label>
+                                <input type="text" id="reg-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-school">School Name</label>
+                                <input type="text" id="reg-school" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-phone">Your Phone Number</label>
+                                <input type="tel" id="reg-phone" placeholder="+2547XXXXXXXX" required>
+                            </div>
+                            <button type="submit" class="large-cta">Submit Request</button>
+                            <p class="auth-switch">Already registered? <a href="#" class="switch-to-login">Login Here</a></p>
+                            <p id="register-status" class="status-message"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        const modal = this.querySelector('#auth-modal');
+        const closeButton = this.querySelector('.close-button');
+
+        const showAuthModal = (initialForm = 'login') => {
+            modal.style.display = 'block';
+            this.switchForm(initialForm);
+        };
+
+        const closeAuthModal = () => {
+            modal.style.display = 'none';
+        };
+
+        // Global event listener to open the modal
+        document.body.addEventListener('show-auth-modal', () => showAuthModal());
+
+        // Event listeners within the component
+        closeButton.addEventListener('click', closeAuthModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeAuthModal();
+            }
+        });
+
+        this.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', () => this.selectRole(btn.dataset.role));
+        });
+
+        this.querySelector('.switch-to-register').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.switchForm('register');
+        });
+
+        this.querySelector('.switch-to-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            this.switchForm('login');
+        });
+
+        // Form submission simulations
+        this.querySelector('#login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const status = this.querySelector('#login-status');
+            status.textContent = 'Attempting to log in...';
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.textContent = 'Login successful! Redirecting...';
+            }, 1500);
+        });
+
+        this.querySelector('#register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const status = this.querySelector('#register-status');
+            status.textContent = 'Submitting your request...';
+            status.style.display = 'block';
+            setTimeout(() => {
+                status.textContent = 'Request received! Our team will contact you shortly.';
+                setTimeout(() => this.switchForm('login'), 3000);
+            }, 1500);
+        });
+    }
+
+    selectRole(selectedRole) {
+        this.querySelectorAll('.role-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.role === selectedRole);
+        });
+    }
+
+    switchForm(formName) {
+        this.querySelectorAll('.auth-form').forEach(form => {
+            form.classList.remove('active-form');
+        });
+        this.querySelector(`#${formName}-form`).classList.add('active-form');
+    }
+}
+
+customElements.define('auth-modal', AuthModal);
+
 class MyWhatapp extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
@@ -102,3 +235,12 @@ class MyWhatapp extends HTMLElement {
 }
 
 customElements.define('my-whatapp', MyWhatapp);
+
+// --- Global Event Dispatcher for Header Button ---
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', function(event) {
+        if (event.target.matches('.login-register-btn')) {
+            document.body.dispatchEvent(new CustomEvent('show-auth-modal'));
+        }
+    });
+});

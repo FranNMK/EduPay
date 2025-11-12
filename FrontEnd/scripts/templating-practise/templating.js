@@ -77,7 +77,7 @@ class MyFooter extends HTMLElement {
                     <a href="${pagesPath}Faqs.html">FAQ'S</a>
                     <a href="${pagesPath}privacy.html">Privacy Policy</a>
                     <a href="${pagesPath}contact.html">Contact Us</a>
-                    <a href="${basePath}Backend/frontend/index.html" class="cta-button nav-cta">Pay Fees</a>
+                    <button class="cta-button nav-cta login-register-btn">Pay Fees</button>
                 </div>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>

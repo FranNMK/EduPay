@@ -20,7 +20,7 @@ class MyHeader extends HTMLElement {
                         <li><a href="${pagesPath}Faqs.html">FAQ'S</a></li>
                         <li><a href="${pagesPath}privacy.html">Privacy Policy</a></li>
                         <li><a href="${pagesPath}contact.html">Contact Us</a></li>
-                        <li><a href="${pagesPath}pay-fees.html" class="cta-button nav-cta">Pay Fees</a></li>
+                        <li><button class="cta-button small-cta login-register-btn">Login / Register</button></li>
                     </ul>
                 </nav>
                 <button class="menu-toggle" aria-label="Toggle navigation"  aria-expanded="false" aria-controls="main-nav"><span></span></button>
@@ -77,7 +77,7 @@ class MyFooter extends HTMLElement {
                     <a href="${pagesPath}Faqs.html">FAQ'S</a>
                     <a href="${pagesPath}privacy.html">Privacy Policy</a>
                     <a href="${pagesPath}contact.html">Contact Us</a>
-                    <a href="${pagesPath}pay-fees.html" class="cta-button nav-cta">Pay Fees</a>
+                    <a href="${pagesPath}dasbboard/dash_pare.html" class="cta-button nav-cta">Pay Fees</a>
                 </div>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | EduPay</title>
+    <link rel="shortcut icon" href="../../../Assets/Images/logo edu pay.jpg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="stylesheet" href="../../styles/dash.css">
+</head>
+<body>
+
+    <header class="dashboard-header">
+        <div class="logo">
+            <img src="assets/edupay-logo.png" alt="EduPay Logo">
+            <span style="font-weight: 700;">ADMIN</span>
+        </div>
+        <div class="user-info">
+            <span id="welcome-admin">Welcome, Super Admin!</span>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </header>
+
+    <div class="dashboard-layout">
+        
+        <aside class="sidebar">
+            <nav class="dashboard-nav">
+                <ul>
+                    <li><a href="#overview" class="active"><i class="fas fa-chart-line"></i> Overview</a></li>
+                    <li><a href="#verification"><i class="fas fa-shield-alt"></i> Payment Verification</a></li>
+                    <li><a href="#reports"><i class="fas fa-file-alt"></i> Reports & Analytics</a></li>
+                    <li><a href="#schools"><i class="fas fa-university"></i> School Management</a></li>
+                    <li><a href="#users"><i class="fas fa-users"></i> User Management</a></li>
+                    <li><a href="#settings"><i class="fas fa-cogs"></i> Platform Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-content">
+            
+            <section id="overview" class="content-section active-content">
+                <h2>System Overview & Health</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h3>Total Revenue (30 Days)</h3>
+                        <p id="stat-total-revenue">KES 0</p>
+                    </div>
+                    <div class="stat-card accent-green">
+                        <i class="fas fa-university"></i>
+                        <h3>Active Institutions</h3>
+                        <p id="stat-active-schools">0 Schools</p>
+                    </div>
+                    <div class="stat-card accent-pink">
+                        <i class="fas fa-hourglass-half"></i>
+                        <h3>Pending Verifications</h3>
+                        <p id="stat-pending-payments">0</p>
+                    </div>
+                    <div class="stat-card primary">
+                        <i class="fas fa-user-shield"></i>
+                        <h3>Total Users</h3>
+                        <p id="stat-total-users">0</p>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent System Activity</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Action</th>
+                                <th>User</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-recent-activity-body">
+                            <tr><td colspan="4">Loading activity log...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+            
+            <section id="verification" class="content-section">
+                <h2>Payment Verification Queue</h2>
+                <p>Review and manually verify payments that failed automated M-Pesa callbacks (e.g., incorrect format, delay, or manual bank transfer). Only approve once funds are confirmed.</p>
+                
+                <div class="history-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Txn ID</th>
+                                <th>Date</th>
+                                <th>Payer Phone</th>
+                                <th>Amount (KES)</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="verification-queue-body">
+                            <tr><td colspan="6">No pending verifications.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="reports" class="content-section">
+                <h2>Reports & Analytics</h2>
+                <p>Generate detailed reports and view key data visualizations on platform performance.</p>
+                
+                <div class="reports-controls">
+                    <select id="report-type">
+                        <option value="revenue-trend">Revenue Trend (KES)</option>
+                        <option value="school-ranking">Top Schools by Volume</option>
+                        <option value="gateway-usage">Payment Gateway Usage</option>
+                    </select>
+                    <input type="date" id="report-start-date">
+                    <input type="date" id="report-end-date">
+                    <button class="secondary-cta">Generate Report</button>
+                </div>
+
+                <div class="chart-container" style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <canvas id="analytics-chart" height="100"></canvas>
+                    <p id="chart-placeholder">Chart will display here once data is loaded.</p>
+                </div>
+            </section>
+            
+            <section id="schools" class="content-section">
+                <h2>School Management</h2>
+                
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <h3>Add New Institution</h3>
+                        <form id="add-school-form">
+                            <div class="form-group">
+                                <label for="school-name">School Name</label>
+                                <input type="text" id="school-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-paybill">M-Pesa Paybill / Till No</label>
+                                <input type="text" id="school-paybill" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="school-account">Bank Account No. (Optional)</label>
+                                <input type="text" id="school-account">
+                            </div>
+                            <button type="submit" class="large-cta">Register School</button>
+                            <p id="add-school-status" class="status-message"></p>
+                        </form>
+                    </div>
+
+                    <div class="profile-card">
+                        <h3>Existing Schools (<span id="school-count">0</span>)</h3>
+                        <input type="text" id="school-search" placeholder="Search by name or paybill">
+                        <div class="history-table-container" style="margin-top: 15px;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Paybill</th>
+                                        <th>Admins</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="school-list-body">
+                                    <tr><td colspan="4">Loading schools...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="users" class="content-section">
+                <h2>User Management (Parents & Admins)</h2>
+                <div class="search-controls">
+                    <input type="text" id="user-search" placeholder="Search by name, phone, or email">
+                    <select id="user-filter-role">
+                        <option value="">All Roles</option>
+                        <option value="parent">Parent/Guardian</option>
+                        <option value="school-admin">School Admin</option>
+                        <option value="super-admin">Super Admin</option>
+                    </select>
+                    <button class="secondary-cta">Filter</button>
+                </div>
+                
+                <div class="history-table-container" style="margin-top: 15px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>School/Linked</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list-body">
+                            <tr><td colspan="5">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section id="settings" class="content-section">
+                <h2>Platform Configuration</h2>
+                <div class="profile-container">
+                    <div class="profile-card security-card">
+                        <h3>M-Pesa API Credentials</h3>
+                        <p>Update Daraja API settings. These changes affect payment processing platform-wide.</p>
+                        <form id="api-settings-form">
+                            <div class="form-group">
+                                <label for="consumer-key">Consumer Key</label>
+                                <input type="text" id="consumer-key" value="**********" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="consumer-secret">Consumer Secret</label>
+                                <input type="password" id="consumer-secret" value="**********" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="callback-url">Callback URL</label>
+                                <input type="text" id="callback-url" value="https://edupay.com/api/mpesa-callback" disabled>
+                                <small>This is a read-only setting.</small>
+                            </div>
+                            <button type="submit" class="large-cta accent-pink-bg">Update Credentials</button>
+                            <p id="api-status" class="status-message"></p>
+                        </form>
+                    </div>
+                    <div class="profile-card">
+                        <h3>System Defaults</h3>
+                        <form id="default-settings-form">
+                            <div class="form-group">
+                                <label for="default-currency">Default Currency</label>
+                                <input type="text" id="default-currency" value="KES" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="default-fee-percentage">Transaction Fee (%)</label>
+                                <input type="number" id="default-fee-percentage" value="1.5" step="0.1" min="0" required>
+                            </div>
+                            <button type="submit" class="large-cta">Save Defaults</button>
+                            <p id="defaults-status" class="status-message"></p>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="../../scripts/admindash.js"></script>
+    <script>
+        // Placeholder function for logout
+        function logout() {
+            localStorage.removeItem('edupayToken');
+            window.location.href = '../../../Backend/frontend/index.html';
+        }
+    </script>
+</body>
+</html>

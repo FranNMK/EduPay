@@ -7,63 +7,159 @@
     <link rel="shortcut icon" href="Assets/Images/logo edu pay.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="FrontEnd\styles\style.css">
+    <link rel="stylesheet" href="FrontEnd/styles/landing.css">
+    <link rel="stylesheet" href="FrontEnd/styles/style.css">
     <script type="module" src="FrontEnd/scripts/templating-practise/templating.js"></script>
 </head>
 <body>
 
     <my-header></my-header>
 
-   
-    <main>
-        <section class="hero-section">
-            <div class="slider-container">
-                <div id="image-slider" class="slider">
-                    <img src="Assets/Images/image 1.jpg" alt="Students Learning" class="slide active-slide">
-                    <img src="Assets/Images/image 1.jpg" alt="Digital Payment" class="slide">
-                    <img src="Assets\Images\logo edu pay.jpg" alt="Modern Classroom" class="slide">
+    <section id="hero" class="hero-section">
+        <div class="slider-container">
+            <div id="image-slider" class="slider">
+                <!-- Images will be populated by index.js -->
+            </div>
+        </div>
+        <div class="hero-content">
+            <div class="floating-message">
+                <p id="message-text"></p>
+            </div>
+            <h1>Empowering Education Through Digital Payments</h1>
+            <p class="mission-vision">Our Mission: To provide a seamless, secure, and transparent digital finance solution for the education sector.</p>
+            <button class="cta-button large-cta" onclick="showAuthModal('login')">Get Started Today!</button>
+        </div>
+    </section>
+
+    <section id="features" class="features-section">
+        <h2>Why Choose EduPay?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt fa-3x"></i>
+                <h3>Instant Payments</h3>
+                <p>Complete any fee payment in under 2 minutes using your preferred payment method.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line fa-3x"></i>
+                <h3>Real-time Tracking</h3>
+                <p>Schools receive instant payment notifications and detailed financial analytics.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-receipt fa-3x"></i>
+                <h3>Digital Receipts</h3>
+                <p>All transactions are documented with automatic, digital receipts sent via email/SMS.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt fa-3x"></i>
+                <h3>Secure & Compliant</h3>
+                <p>Built with robust security (2FA) and compliant with local financial regulations.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Ready to Digitize Your Fee Collection?</h2>
+        <p>Contact us to integrate EduPay for your school or institution.</p>
+        <a href="FrontEnd/html-files/contact.html" class="cta-button large-cta secondary-cta">Contact Sales Team</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 EduPay. All rights reserved. | Built in Kenya 🇰🇪</p>
+    </footer>
+
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAuthModal()">&times;</span>
+
+            <div class="modal-header">
+                <h2 id="modal-title">Welcome to EduPay</h2>
+                <div class="role-selector">
+                    <button class="role-btn active" data-role="parent"
+                        onclick="selectRole('parent')">Parent/Student</button>
+                    <button class="role-btn" data-role="admin" onclick="selectRole('admin')">School Admin</button>
                 </div>
             </div>
 
-            <div class="hero-content">
-                <div class="floating-message">
-                    <p id="message-text"></p> 
-                </div>
-                <h1>Empowering Education Through Digital Payments</h1>
-                <p class="mission-vision">
-                    Our Mission: To provide a seamless, secure, and transparent digital finance solution for the education sector.
-                </p>
-                <a href="pay-fees.html" class="cta-button large-cta">Get Started Today!</a>
+            <div class="auth-box">
+                <form id="login-form" class="auth-form active-form">
+                    <h3>Login to Your Account</h3>
+
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+
+                    <button type="submit" class="large-cta">Login</button>
+                    <p class="auth-switch">Don't have an account? <a href="#" onclick="switchForm('register')">Register
+                            Here</a></p>
+                    <p id="login-status" class="status-message"></p>
+                </form>
+
+                <form id="register-form" class="auth-form">
+                    <h3>Create a Parent/Student Account</h3>
+
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-phone">Phone Number (M-Pesa registered)</label>
+                        <input type="tel" id="reg-phone" pattern="^\+254[0-9]{9}$" placeholder="+2547XXXXXXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" required>
+                    </div>
+
+                    <button type="submit" class="large-cta">Register & Verify Phone</button>
+                    <p class="auth-switch">Already registered? <a href="#" onclick="switchForm('login')">Login Here</a>
+                    </p>
+                    <p id="register-status" class="status-message"></p>
+                </form>
+
+                <form id="otp-form" class="auth-form">
+                    <h3>Verify Your Phone Number</h3>
+                    <p>An OTP has been sent to <span id="otp-phone-display"></span>. Enter it below to complete
+                        registration.</p>
+
+                    <div class="form-group">
+                        <label for="otp-code">Verification Code</label>
+                        <input type="text" id="otp-code" pattern="\d{6}" maxlength="6" required>
+                    </div>
+
+                    <button type="submit" class="large-cta accent-pink-bg">Verify Account</button>
+                    <p class="auth-switch"><a href="#" onclick="resendOtp()">Resend Code</a></p>
+                    <p id="otp-status" class="status-message"></p>
+                </form>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section class="essence-section">
-            <h2 class="section-heading">The Essence of EduPay</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>Secure & Real-time</h3>
-                    <p>Payments are instantly verified, providing transparency to both parents and institutions.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Multiple Gateways</h3>
-                    <p>Pay easily using M-Pesa, Bank, or Card – whichever works best for you.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Digital Receipts</h3>
-                    <p>Instant digital receipts sent via email/WhatsApp, eliminating paperwork.</p>
-                </div>
-            </div>
-        </section>
-
-       <my-footer></my-footer>
-    </main>
-
-    <my-whatapp></my-whatapp>
-
+    <script src="FrontEnd/scripts/landing.js"></script>
     <script src="FrontEnd/scripts/index.js"></script>
-    <!-- <script src="FrontEnd/scripts/layout.js" defer></script> -->
 
+    <script>
+        // Add click listener for the new "Login / Register" button from the header component
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.addEventListener('click', function(event) {
+                if (event.target.matches('.login-register-btn')) {
+                    showAuthModal('login');
+                }
+            });
+        });
+    </script>
 </body>
-
 
 </html>

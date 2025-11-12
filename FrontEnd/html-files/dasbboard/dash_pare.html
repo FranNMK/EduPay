@@ -1,1 +1,266 @@
-`
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard | EduPay</title>
+    <link rel="shortcut icon" href="../../../Assets/Images/logo edu pay.jpg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="stylesheet" href="../../styles/dash.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <nav class="dashboard-nav">
+                <ul>
+                    <li><a href="#overview" class="active"><i class="fas fa-home"></i> Overview</a></li>
+                    <li><a href="#pay-fees"><i class="fas fa-money-bill-wave"></i> Pay Fees</a></li>
+                    <li><a href="#history"><i class="fas fa-history"></i> Payment History</a></li>
+                    <li><a href="#students"><i class="fas fa-user-graduate"></i> My Students</a></li>
+                    <li><a href="#profile"><i class="fas fa-user-circle"></i> Profile & Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-content">
+
+            <section id="overview" class="content-section active-content">
+                <h2 id="overview-greeting">Welcome Back!</h2>
+
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <i class="fas fa-school"></i>
+                        <h3>Institutions Linked</h3>
+                        <p id="stat-institutions">--</p>
+                    </div>
+                    <div class="stat-card accent-green">
+                        <i class="fas fa-coins"></i>
+                        <h3>Total Paid This Year</h3>
+                        <p id="stat-total-paid">KES 0</p>
+                    </div>
+                    <div class="stat-card accent-pink">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Next Fee Due</h3>
+                        <p id="stat-next-due">--</p>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student</th>
+                                <th>School</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-payments-body">
+                            <tr>
+                                <td colspan="6">Loading recent payments...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="pay-fees" class="content-section">
+                <h2>Pay Fees</h2>
+                <div class="pay-fees-flow">
+
+                    <div class="payment-step active-step" id="step-1">
+                        <h3>1. Select Student & Institution</h3>
+                        <div class="form-group">
+                            <label for="student-select">Select Student</label>
+                            <select id="student-select" required>
+                                <option value="">-- Loading Students... --</option>
+                            </select>
+                        </div>
+
+                        <div class="fee-summary-card">
+                            <h4>Fee Status for <span id="summary-student-name">...</span></h4>
+                            <p><strong>Total Term Fees:</strong> <span id="summary-total-fees">KES 0</span></p>
+                            <p><strong>Total Due:</strong> <span class="due-amount" id="summary-due-amount">KES 0</span>
+                            </p>
+                            <p>Last Payment: <span id="summary-last-payment">N/A</span></p>
+                        </div>
+
+                        <button class="large-cta next-step-btn" data-next="step-2" disabled
+                            id="continue-to-amount">Continue to Amount</button>
+                    </div>
+
+                    <div class="payment-step" id="step-2">
+                        <h3>2. Enter Payment Details</h3>
+
+                        <div class="form-group">
+                            <label for="payment-amount">Enter Amount to Pay (KES)</label>
+                            <input type="number" id="payment-amount" placeholder="Minimum KES 100" required>
+                            <small>Remaining Balance: <strong id="amount-remaining-balance">KES 0</strong></small>
+                        </div>
+
+                        <button class="secondary-cta prev-step-btn" data-prev="step-1">Back</button>
+                        <button class="large-cta next-step-btn" data-next="step-3" id="continue-to-gateway">Continue to
+                            Payment Gateway</button>
+                    </div>
+
+                    <div class="payment-step" id="step-3">
+                        <h3>3. Select Payment Gateway</h3>
+
+                        <div class="gateway-options">
+                            <label class="gateway-card">
+                                <input type="radio" name="gateway" value="mpesa" checked>
+                                <i class="fas fa-mobile-alt"></i> M-Pesa (Safaricom)
+                                <small>Instant, requires STK push confirmation on your phone.</small>
+                            </label>
+
+                            <label class="gateway-card">
+                                <input type="radio" name="gateway" value="card">
+                                <i class="fas fa-credit-card"></i> Debit/Credit Card
+                                <small>Securely pay using Visa or Mastercard.</small>
+                            </label>
+
+                            <label class="gateway-card">
+                                <input type="radio" name="gateway" value="bank">
+                                <i class="fas fa-university"></i> Bank Transfer
+                                <small>Provides Bank details for manual transfer.</small>
+                            </label>
+                        </div>
+
+                        <p class="final-summary">You are about to pay: <strong id="final-amount">KES 0</strong></p>
+
+                        <button class="secondary-cta prev-step-btn" data-prev="step-2">Back</button>
+                        <button class="large-cta final-pay-btn" id="final-pay-btn">CONFIRM & PAY</button>
+                    </div>
+
+                    <div class="payment-step" id="step-4">
+                        <h3>Processing Payment...</h3>
+                        <p id="payment-status">Initiating payment via M-Pesa STK Push. Check your phone now.</p>
+                        <div class="loader"></div>
+                        <p>Do not close this window until you confirm the payment on your device.</p>
+                        <button class="secondary-cta" id="start-new-payment-btn" style="margin-top: 20px;">Start New
+                            Payment</button>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="history" class="content-section">
+                <h2>Payment History</h2>
+                <div class="search-controls">
+                    <input type="text" id="history-search" placeholder="Search by Student Name or Transaction ID">
+                    <select id="history-filter-status">
+                        <option value="">All Statuses</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                    <input type="date" id="history-filter-date">
+                    <button class="secondary-cta" id="apply-history-filters">Apply Filters</button>
+                </div>
+
+                <div class="history-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Student</th>
+                                <th>School</th>
+                                <th>Amount (KES)</th>
+                                <th>Status</th>
+                                <th>Receipt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="full-payment-history-body">
+                            <tr>
+                                <td colspan="6">Loading payment history...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="students" class="content-section">
+                <h2>My Linked Students</h2>
+                <p>Manage the students associated with your EduPay account. You can pay fees for any student listed
+                    below.</p>
+
+                <div id="students-list-container" class="students-grid">
+                    <div class="student-card placeholder-card">
+                        <i class="fas fa-spinner fa-spin"></i> Loading students...
+                    </div>
+                </div>
+            </section>
+            <section id="profile" class="content-section">
+                <h2>Profile & Settings</h2>
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <h3>Personal Information</h3>
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label for="profile-name">Full Name</label>
+                                <input type="text" id="profile-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-phone">Phone Number</label>
+                                <input type="text" id="profile-phone" disabled>
+                                <small>Contact Support to change your primary phone number.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-email">Email Address</label>
+                                <input type="email" id="profile-email">
+                            </div>
+                            <button type="submit" class="large-cta" id="update-profile-btn">Update Profile</button>
+                            <p id="profile-status" class="status-message"></p>
+                        </form>
+                    </div>
+
+                    <div class="profile-card security-card">
+                        <h3>Security Settings</h3>
+                        <form id="password-form">
+                            <p>Change your account password (Requires current password verification).</p>
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" required>
+                            </div>
+                            <button type="submit" class="large-cta accent-pink-bg">Change Password</button>
+                            <p id="password-status" class="status-message"></p>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../../scripts/dashboard.js"></script>
+    <script>
+        // --- Dashboard Navigation Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.dashboard-nav a');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent the default anchor link behavior
+                    const targetId = link.getAttribute('href').substring(1);
+                    switchContent(targetId); // Call the global function from dashboard.js
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

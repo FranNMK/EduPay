@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPay | Digital School Fees Payment Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ================================================= */
+        /* 1. GLOBAL STYLES & VARIABLES                      */
+        /* ================================================= */
+        :root {
+            /* Color Palette */
+            --color-primary: #1e3a8a;
+            /* Deep Blue (for corporate/trust) */
+            --color-primary-dark: #1e3a8a;
+            --color-secondary: #06b6d4;
+            /* Cyan/Teal (for modern/tech feel) */
+            --accent-pink: #ff447f;
+            /* Pink (for CTAs/highlight) */
+
+            /* Text Colors */
+            --color-text-primary: #1f2937;
+            --color-text-secondary: #6b7280;
+            --color-white: #ffffff;
+
+            /* Backgrounds */
+            --color-background: #f3f4f6;
+            --color-light-gray: #e5e7eb;
+            --color-border: #d1d5db;
+
+            /* Status Colors */
+            --color-success: #10b981;
+            --color-error: #ef4444;
+            --color-pending: #f59e0b;
+
+            /* Spacing */
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 32px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            scroll-behavior: smooth;
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--color-secondary);
+        }
+
+        /* Headings */
+        h1,
+        h2,
+        h3 {
+            margin-bottom: var(--spacing-md);
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            /* Controlled by JS */
+        }
+
+
+        /* ================================================= */
+        /* 2. BUTTONS & FORMS (Reusable)                     */
+        /* ================================================= */
+
+        .cta-button {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        /* Primary CTA */
+        .large-cta {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .large-cta:hover {
+            background-color: var(--color-secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Secondary CTA */
+        .secondary-cta {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+            padding: 10px 20px;
+        }
+
+        .secondary-cta:hover {
+            background-color: var(--color-primary);
+        }
+
+        /* Small CTA (used in nav/tables) */
+        .small-cta {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            background-color: var(--accent-pink);
+            color: var(--color-white);
+        }
+
+        .small-cta:hover {
+            background-color: #e04a79;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: var(--color-white);
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--color-primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+        }
+
+
+        /* ================================================= */
+        /* 3. LANDING PAGE SECTIONS (index.html)             */
+        /* ================================================= */
+
+        /* Header */
+        .main-header {
+            background-color: var(--color-white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 15px var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-header .logo img {
+            height: 40px;
+        }
+
+        .main-header nav a {
+            margin-left: 25px;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 80px var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .hero-image {
+            text-align: center;
+            color: var(--color-secondary);
+        }
+
+        .hero-image i {
+            font-size: 8rem;
+        }
+
+        .hero-image p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 60px var(--spacing-lg);
+            text-align: center;
+            background-color: var(--color-white);
+        }
+
+        .features-section h2 {
+            color: var(--color-primary);
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            background-color: var(--color-background);
+            padding: 30px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card i {
+            color: var(--accent-pink);
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            text-align: center;
+            padding: 60px var(--spacing-lg);
+            background-color: var(--color-light-gray);
+        }
+
+        .contact-section h2 {
+            color: var(--color-primary);
+        }
+
+        .contact-section p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--color-text-primary);
+            color: var(--color-white);
+            font-size: 0.9rem;
+        }
+
+
+        /* ================================================= */
+        /* 4. AUTHENTICATION MODAL (index.html)              */
+        /* ================================================= */
+
+        /* Modal Backdrop */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            /* 5% from the top and centered */
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            /* Max width for auth forms */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--color-error);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            margin-bottom: 10px;
+            color: var(--color-primary);
+        }
+
+        /* Role Selector Tabs */
+        .role-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            background-color: var(--color-light-gray);
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 8px 10px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            transition: all 0.2s;
+        }
+
+        .role-btn.active {
+            background-color: var(--color-white);
+            color: var(--color-primary);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Auth Forms */
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active-form {
+            display: block;
+        }
+
+        .auth-form h3 {
+            text-align: center;
+            color: var(--accent-pink);
+            margin-top: 0;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* OTP Form specific style */
+        #otp-phone-display {
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+
+        /* ================================================= */
+        /* 5. MEDIA QUERIES (Responsive Design)              */
+        /* ================================================= */
+        @media (max-width: 800px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 40px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-image {
+                margin-top: 30px;
+            }
+
+            .main-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .main-header nav {
+                display: flex;
+                width: 100%;
+                justify-content: space-around;
+                padding-bottom: 5px;
+            }
+
+            .main-header nav a {
+                margin-left: 0;
+                font-size: 0.9rem;
+            }
+
+            /* Move button to header for small screens */
+            .main-header nav .cta-button {
+                display: none;
+            }
+
+            .main-header {
+                /* Add back the login/register button outside the nav */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="logo">
+            <img src="assets/edupay-logo.png" alt="EduPay Logo">
+        </div>
+        <nav>
+            <a href="#hero">Home</a>
+            <a href="#features">Features</a>
+            <a href="#contact">Contact</a>
+            <button class="cta-button small-cta" onclick="showAuthModal('login')">Login / Register</button>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1>Pay School Fees Instantly, Anywhere in Kenya.</h1>
+            <p>EduPay streamlines school payments via M-Pesa, Bank, and Card, providing schools with real-time tracking
+                and digital receipts.</p>
+            <button class="cta-button large-cta" onclick="showAuthModal('login')">Get Started Now</button>
+        </div>
+        <div class="hero-image">
+            <i class="fas fa-mobile-alt fa-5x"></i>
+            <p>One-Tap Payment</p>
+        </div>
+    </section>
+
+    <section id="features" class="features-section">
+        <h2>Why Choose EduPay?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt fa-3x"></i>
+                <h3>Instant Payments</h3>
+                <p>Complete any fee payment in under 2 minutes using your preferred payment method.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line fa-3x"></i>
+                <h3>Real-time Tracking</h3>
+                <p>Schools receive instant payment notifications and detailed financial analytics.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-receipt fa-3x"></i>
+                <h3>Digital Receipts</h3>
+                <p>All transactions are documented with automatic, digital receipts sent via email/SMS.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt fa-3x"></i>
+                <h3>Secure & Compliant</h3>
+                <p>Built with robust security (2FA) and compliant with local financial regulations.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Ready to Digitize Your Fee Collection?</h2>
+        <p>Contact us to integrate EduPay for your school or institution.</p>
+        <a href="mailto:info@edupay.com" class="cta-button large-cta secondary-cta">Contact Sales Team</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 EduPay. All rights reserved. | Built in Kenya 🇰🇪</p>
+    </footer>
+
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAuthModal()">&times;</span>
+
+            <div class="modal-header">
+                <h2 id="modal-title">Welcome to EduPay</h2>
+                <div class="role-selector">
+                    <button class="role-btn active" data-role="parent"
+                        onclick="selectRole('parent')">Parent/Student</button>
+                    <button class="role-btn" data-role="admin" onclick="selectRole('admin')">School Admin</button>
+                    <button class="role-btn" data-role="superadmin" onclick="selectRole('superadmin')">Super
+                        Admin</button>
+                </div>
+            </div>
+
+            <div class="auth-box">
+                <form id="login-form" class="auth-form active-form">
+                    <h3>Login to Your Account</h3>
+
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+
+                    <button type="submit" class="large-cta">Login</button>
+                    <p class="auth-switch">Don't have an account? <a href="#" onclick="switchForm('register')">Register
+                            Here</a></p>
+                    <p id="login-status" class="status-message"></p>
+                </form>
+
+                <form id="register-form" class="auth-form">
+                    <h3>Create a Parent/Student Account</h3>
+
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-phone">Phone Number (M-Pesa registered)</label>
+                        <input type="tel" id="reg-phone" pattern="^\+254[0-9]{9}$" placeholder="+2547XXXXXXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" required>
+                    </div>
+
+                    <button type="submit" class="large-cta">Register & Verify Phone</button>
+                    <p class="auth-switch">Already registered? <a href="#" onclick="switchForm('login')">Login Here</a>
+                    </p>
+                    <p id="register-status" class="status-message"></p>
+                </form>
+
+                <form id="otp-form" class="auth-form">
+                    <h3>Verify Your Phone Number</h3>
+                    <p>An OTP has been sent to <span id="otp-phone-display"></span>. Enter it below to complete
+                        registration.</p>
+
+                    <div class="form-group">
+                        <label for="otp-code">Verification Code</label>
+                        <input type="text" id="otp-code" pattern="\d{6}" maxlength="6" required>
+                    </div>
+
+                    <button type="submit" class="large-cta accent-pink-bg">Verify Account</button>
+                    <p class="auth-switch"><a href="#" onclick="resendOtp()">Resend Code</a></p>
+                    <p id="otp-status" class="status-message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

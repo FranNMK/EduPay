@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -579,20 +579,20 @@
             </div>
 
             <div class="auth-box">
-                <form id="login-form" class="auth-form active-form">
-                    <h3>Login to Your Account</h3>
+                <form id="login-form" class="auth-form active-form" autocomplete="off">
+                    <h3>Login with OTP</h3>
 
                     <div class="form-group">
-                        <label for="login-email">Email Address</label>
-                        <input type="email" id="login-email" required>
+                        <label for="login-identifier">Email or Phone Number</label>
+                        <input type="text" id="login-identifier" placeholder="e.g., user@example.com or +2547..." required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" required>
+                    <div id="otp-group" class="form-group" style="display: none;">
+                        <label for="otp-code">Verification Code</label>
+                        <input type="text" id="otp-code" pattern="\d{6}" maxlength="6" placeholder="Enter 6-digit code">
                     </div>
 
-                    <button type="submit" class="large-cta">Login</button>
+                    <button type="submit" class="large-cta">Request OTP</button>
                     <p class="auth-switch">Don't have an account? <a href="#" onclick="switchForm('register')">Register
                             Here</a></p>
                     <p id="login-status" class="status-message"></p>
@@ -616,36 +616,16 @@
                         <input type="email" id="reg-email" required>
                     </div>
 
-                    <div class="form-group">
-                        <label for="reg-password">Password</label>
-                        <input type="password" id="reg-password" required>
-                    </div>
-
-                    <button type="submit" class="large-cta">Register & Verify Phone</button>
+                    <button type="submit" class="large-cta">Request Registration</button>
                     <p class="auth-switch">Already registered? <a href="#" onclick="switchForm('login')">Login Here</a>
                     </p>
                     <p id="register-status" class="status-message"></p>
-                </form>
-
-                <form id="otp-form" class="auth-form">
-                    <h3>Verify Your Phone Number</h3>
-                    <p>An OTP has been sent to <span id="otp-phone-display"></span>. Enter it below to complete
-                        registration.</p>
-
-                    <div class="form-group">
-                        <label for="otp-code">Verification Code</label>
-                        <input type="text" id="otp-code" pattern="\d{6}" maxlength="6" required>
-                    </div>
-
-                    <button type="submit" class="large-cta accent-pink-bg">Verify Account</button>
-                    <p class="auth-switch"><a href="#" onclick="resendOtp()">Resend Code</a></p>
-                    <p id="otp-status" class="status-message"></p>
                 </form>
             </div>
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
+    <script src="../scripts/landing.js"></script>
 </body>
 
-</html>
+</html> -->

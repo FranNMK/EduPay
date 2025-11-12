@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '../config.js';
+
 class MyHeader extends HTMLElement {
     connectedCallback() {
         // Determine the correct base path for links and assets
@@ -103,26 +105,26 @@ class AuthModal extends HTMLElement {
                         <div class="role-selector">
                             <button class="role-btn active" data-role="parent">Parent/Student</button>
                             <button class="role-btn" data-role="admin">School Admin</button>
+                            <button class="role-btn" data-role="superadmin">Super Admin</button>
                         </div>
                     </div>
                     <div class="auth-box">
-                        <form id="login-form" class="auth-form">
-                            <h3>Login to Your Account</h3>
+                        <form id="login-form" class="auth-form" autocomplete="off">
+                            <h3>Login with OTP</h3>
                             <div class="form-group">
-                                <label for="login-email">Email Address</label>
-                                <input type="email" id="login-email" required>
+                                <label for="login-identifier">Email or Phone Number</label>
+                                <input type="text" id="login-identifier" placeholder="e.g., user@example.com or +2547..." required>
                             </div>
-                            <div class="form-group">
-                                <label for="login-password">Password</label>
-                                <input type="password" id="login-password" required>
+                            <div id="otp-group" class="form-group" style="display: none;">
+                                <label for="otp-code">Verification Code</label>
+                                <input type="text" id="otp-code" pattern="\\d{6}" maxlength="6" placeholder="Enter 6-digit code">
                             </div>
-                            <button type="submit" class="large-cta">Login</button>
+                            <button type="submit" class="large-cta">Request OTP</button>
                             <p class="auth-switch">Don't have an account? <a href="#" class="switch-to-register">Request Registration</a></p>
                             <p id="login-status" class="status-message"></p>
                         </form>
                         <form id="register-form" class="auth-form">
-                            <h3>Request Registration</h3>
-                            <p style="text-align: center; font-size: 0.9rem; margin-bottom: 15px;">Submit your details and our team will create your account and contact you.</p>
+                            <h3 id="register-title">Request Parent/Student Registration</h3>
                             <div class="form-group">
                                 <label for="reg-name">Full Name</label>
                                 <input type="text" id="reg-name" required>
@@ -186,32 +188,115 @@ class AuthModal extends HTMLElement {
         });
 
         // Form submission simulations
-        this.querySelector('#login-form').addEventListener('submit', (e) => {
+        this.querySelector('#login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const identifierInput = this.querySelector('#login-identifier');
+            const otpGroup = this.querySelector('#otp-group');
+            const otpInput = this.querySelector('#otp-code');
             const status = this.querySelector('#login-status');
-            status.textContent = 'Attempting to log in...';
+            const submitButton = this.querySelector('#login-form button[type="submit"]');
+            const selectedRole = this.querySelector('.role-btn.active')?.dataset.role || 'parent';
+
             status.style.display = 'block';
-            setTimeout(() => {
-                status.textContent = 'Login successful! Redirecting...';
-            }, 1500);
+
+            if (otpGroup.style.display === 'block') {
+                // --- STEP 2: VERIFY OTP ---
+                const otpCode = otpInput.value;
+                if (!otpCode || otpCode.length < 6) {
+                    status.textContent = 'Please enter the 6-digit OTP.';
+                    status.style.color = 'var(--color-error)';
+                    return;
+                }
+
+                status.textContent = 'Verifying OTP...';
+                status.style.color = 'var(--color-pending)';
+                submitButton.disabled = true;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ identifier: identifierInput.value, otp: otpCode })
+                    });
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        localStorage.setItem('edupayToken', data.token);
+                        status.textContent = 'Login successful! Redirecting...';
+                        status.style.color = 'var(--color-success)';
+                        setTimeout(() => {
+                            if (data.role === 'Parent') window.location.href = 'FrontEnd/html-files/dash_pare.html';
+                            else if (data.role === 'Admin' || data.role === 'Super Admin') window.location.href = 'FrontEnd/html-files/admin.html';
+                            else window.location.href = 'FrontEnd/html-files/dash_pare.html';
+                        }, 1000);
+                    } else {
+                        status.textContent = `Login failed: ${data.msg || 'Invalid or expired OTP.'}`;
+                        status.style.color = 'var(--color-error)';
+                    }
+                } catch (error) {
+                    status.textContent = 'A network error occurred. Please try again.';
+                    status.style.color = 'var(--color-error)';
+                } finally {
+                    submitButton.disabled = false;
+                }
+            } else {
+                // --- STEP 1: REQUEST OTP ---
+                status.textContent = 'Requesting OTP...';
+                status.style.color = 'var(--color-pending)';
+                submitButton.disabled = true;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/otp-request`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ identifier: identifierInput.value, role: selectedRole })
+                    });
+
+                    if (response.ok) {
+                        status.textContent = `An OTP has been sent to ${identifierInput.value}.`;
+                        status.style.color = 'var(--color-success)';
+                        otpGroup.style.display = 'block';
+                        otpInput.focus();
+                        submitButton.textContent = 'Verify & Login';
+                        identifierInput.readOnly = true;
+                    } else {
+                        const error = await response.json();
+                        status.textContent = `Error: ${error.msg || 'User not found or invalid input.'}`;
+                        status.style.color = 'var(--color-error)';
+                    }
+                } catch (error) {
+                    status.textContent = 'A network error occurred. Please check your connection.';
+                    status.style.color = 'var(--color-error)';
+                } finally {
+                    submitButton.disabled = false;
+                }
+            }
         });
 
         this.querySelector('#register-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const status = this.querySelector('#register-status');
             status.textContent = 'Submitting your request...';
+            status.style.color = 'var(--color-pending)';
             status.style.display = 'block';
             setTimeout(() => {
-                status.textContent = 'Request received! Our team will contact you shortly.';
+                status.textContent = 'Request received! Your school admin will contact you upon registration.';
+                status.style.color = 'var(--color-success)';
                 setTimeout(() => this.switchForm('login'), 3000);
             }, 1500);
         });
     }
 
     selectRole(selectedRole) {
+        const registerTitle = this.querySelector('#register-title');
         this.querySelectorAll('.role-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.role === selectedRole);
         });
+        if (registerTitle) {
+            if (selectedRole === 'parent') registerTitle.textContent = 'Request Parent/Student Registration';
+            else if (selectedRole === 'admin') registerTitle.textContent = 'Request School Admin Registration';
+            else registerTitle.textContent = 'Request Super Admin Registration';
+        }
     }
 
     switchForm(formName) {

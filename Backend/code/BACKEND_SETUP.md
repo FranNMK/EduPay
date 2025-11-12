@@ -13,7 +13,7 @@ Before running the application, set up the following environment variables in `.
 - `STRIPE_SECRET_KEY`: Your Stripe secret key (from Stripe Dashboard)
 - `STRIPE_PUBLISHABLE_KEY`: Your Stripe publishable key
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Public key (for client-side)
-- `STRIPE_WEBHOOK_SECRET`: Webhook signing secret
+- `STRIPE_WEBHOOK_SECRET`: Webhook signing secret 
 
 ## Getting Started
 

@@ -7,7 +7,7 @@ class MyHeader extends HTMLElement {
         const pagesPath = isSubfolder ? '' : 'FrontEnd/html-files/';
 
         this.innerHTML = `
-            <div class="header-container"><header class="main-header">
+            <header class="main-header">
                 <div class="logo">
                     <!-- Use the dynamic path for the logo -->
                     <a href="${basePath}index.html"><img src="${assetsPath}Images/logo edu pay.jpg" alt="EduPay Logo"></a>
@@ -24,7 +24,7 @@ class MyHeader extends HTMLElement {
                     </ul>
                 </nav>
                 <button class="menu-toggle" aria-label="Toggle navigation"  aria-expanded="false" aria-controls="main-nav"><span></span></button>
-            </header></div>
+            </header>
         `;
 
         // --- Logic to highlight the active navigation link ---

@@ -22,11 +22,12 @@ body {
     
 }
 
-/* New container to handle sticky positioning reliably */
-.header-container {
+/* Make the header component sticky and give it the highest stacking order */
+my-header {
     position: sticky;
     top: 0;
     z-index: 1000;
+    display: block; /* Custom elements need to be block-level for positioning */
 }
 
 /* === 1. Navigation Bar (Header) Styling === */
@@ -391,14 +392,13 @@ body {
 @media (max-width: 992px) {
     .main-nav {
         display: none; /* Hide navigation links on smaller screens */
-        /* Use fixed positioning to ensure it's on top of everything */
-        position: fixed;
+        /* Position absolutely relative to the header container */
+        position: absolute;
         width: 100%;
-        top: 110px; /* Adjust based on your header height */
+        top: 100%; /* Position it right below the header */
         left: 0;
         background: #fff;
         box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-        z-index: 999; /* Below the main header container */
     }
     
     .main-nav.open {

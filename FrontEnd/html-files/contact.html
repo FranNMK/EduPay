@@ -5,12 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact EduPay Support</title>
+    <link rel="shortcut icon" href="../../Assets/Images/logo edu pay.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Corrected relative paths for stylesheets -->
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../styles/contact.css">
     <script type="module" src="../scripts/templating-practise/templating.js"></script>
+    <style>
+        /* Style the select dropdown to match other form inputs */
+        .contact-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: var(--font-family);
+        }
+    </style>
 </head>
 
 <body>
@@ -45,15 +56,7 @@
                     </div>
                     <div class="form-group">
                         <label for="County">County of You Instituition</label>
-                        <select id="county-details" required>
-                            <option value="">-- Select your County of Location --</option>
-                            <option value=""> Nairobi</option>
-                            <option value=""> Kisumu</option>
-                            <option value=""> Nyeri</option>
-                            <option value=""> Kirinyaga</option>
-                            <option value=""> Kiambu</option>
-                            <option value=""> Mombasa</option>
-                        </select>
+                        <select id="county-details" required></select>
                     </div>
                     <button type="submit" class="large-cta form-submit-btn">Send Message</button>
                     <p id="formStatus" class="status-message"></p>
@@ -91,6 +94,40 @@
     <my-whatapp></my-whatapp>
 
     <script>
+        // --- Populate Kenyan Counties ---
+        document.addEventListener('DOMContentLoaded', function () {
+            const counties = [
+                "Mombasa", "Kwale", "Kilifi", "Tana River", "Lamu", "Taita-Taveta",
+                "Garissa", "Wajir", "Mandera", "Marsabit", "Isiolo", "Meru",
+                "Tharaka-Nithi", "Embu", "Kitui", "Machakos", "Makueni", "Nyandarua",
+                "Nyeri", "Kirinyaga", "Murang'a", "Kiambu", "Turkana", "West Pokot",
+                "Samburu", "Trans Nzoia", "Uasin Gishu", "Elgeyo-Marakwet", "Nandi",
+                "Baringo", "Laikipia", "Nakuru", "Narok", "Kajiado", "Kericho",
+                "Bomet", "Kakamega", "Vihiga", "Bungoma", "Busia", "Siaya",
+                "Kisumu", "Homa Bay", "Migori", "Kisii", "Nyamira", "Nairobi"
+            ];
+
+            // Sort counties alphabetically
+            counties.sort();
+
+            const countySelect = document.getElementById('county-details');
+
+            // Add a placeholder option
+            const placeholderOption = document.createElement('option');
+            placeholderOption.value = "";
+            placeholderOption.textContent = "-- Select your County of Location --";
+            placeholderOption.disabled = true;
+            placeholderOption.selected = true;
+            countySelect.appendChild(placeholderOption);
+
+            // Add each county as an option
+            counties.forEach(county => {
+                const option = document.createElement('option');
+                option.value = county.toLowerCase().replace(/ /g, '-');
+                option.textContent = county;
+                countySelect.appendChild(option);
+            });
+        });
         // Simple client-side form submission simulation for frontend
         document.getElementById('contactForm').addEventListener('submit', function (event) {
             event.preventDefault();

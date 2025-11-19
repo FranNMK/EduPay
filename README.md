@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/FranNMK/EduPay">
-    <img src="Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="80" height="80">
+    <img src="Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="120">
   </a>
   <h3 align="center">EduPay</h3>
   <p align="center">

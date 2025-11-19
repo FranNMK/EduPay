@@ -1,6 +1,8 @@
 <p align="center">
-  <img src="../Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="80" height="80">
+  <img src="../Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="120">
 </p>
+
+# EduPay - Project Documentation
 
 Welcome to the official documentation for EduPay, a smart digital fees payment and management system. This document provides a deep dive into the project's architecture, features, and future roadmap.
 
@@ -115,3 +117,11 @@ The following features are planned for future development to enhance the capabil
     *   **USSD Version:** Develop a USSD (Unstructured Supplementary Service Data) interface for basic payment functionalities. This will enable non-smartphone users or those with limited internet access to check fee balances and initiate payments through simple USSD codes, ensuring maximum inclusivity.
 
 ---
+
+## 5. Author & Contact
+
+This project is maintained by the following author:
+
+*   **Author:** FranNMK
+*   **GitHub Profile:** [https://github.com/FranNMK](https://github.com/FranNMK)
+*   **Project Link:** [https://github.com/FranNMK/EduPay](https://github.com/FranNMK/EduPay)

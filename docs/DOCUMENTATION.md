@@ -40,9 +40,13 @@ The system is designed around a set of core features that are accessible via API
 
 ### 3.1 Secure User Authentication
 
-*   **How it works:** The system uses a token-based authentication mechanism. When a user (admin, student, or parent) registers, their password is encrypted (hashed and salted) using `bcryptjs` and stored securely in the database. Upon login, the user provides their credentials, which are validated. If successful, the server generates a JSON Web Token (JWT) signed with a secret key (`JWT_SECRET`). This token is sent back to the client.
+*   **How it works:** The system employs a token-based authentication mechanism with differentiated login flows based on user roles:
+    *   **For Administrators:** Admins will log in using a traditional username/email and password combination. Upon successful validation, their password (encrypted using `bcryptjs`) is verified against the stored hash. A JSON Web Token (JWT) signed with a secret key (`JWT_SECRET`) is then generated and sent back to the client.
+    *   **For Parents (and potentially Students):** Parents will use an OTP (One-Time Password) sent to their registered email address for login. When a parent initiates a login, the system generates a unique OTP and sends it to their email. The parent then enters this OTP, which is validated by the server. Upon successful OTP verification, a JWT is generated and sent to the client. This method enhances convenience and security by eliminating the need for parents to remember complex passwords.
 *   **API Usage:** For subsequent requests to protected routes, the client must include this JWT in the `Authorization` header (e.g., `Authorization: Bearer <token>`). A middleware on the server verifies the token's validity before granting access to the requested resource.
 *   **Roles:** The system is designed to support different user roles (e.g., 'admin', 'student'). The user's role is encoded within the JWT payload, allowing the backend to enforce role-based access control (RBAC) on different API endpoints.
+
+    *   **Note:** The implementation for OTP via email will require integration with an email service provider (e.g., SendGrid, Nodemailer) to send the OTPs.
 
 ### 3.2 Student & Fee Management (Admin)
 

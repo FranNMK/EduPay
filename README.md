@@ -65,6 +65,7 @@ This project is built with the following technologies:
     *   [Mongoose](https://mongoosejs.com/)
     *   [JSON Web Tokens (JWT)](https://jwt.io/) for authentication
     *   [bcryptjs](https://www.npmjs.com/package/bcryptjs) for password hashing
+    *   [Nodemailer](https://nodemailer.com/) for sending OTP emails
 *   **Frontend:**
     *   *(Please add your frontend framework here, e.g., React, Angular, Vue.js)*
 
@@ -101,24 +102,29 @@ Make sure you have the following installed on your machine:
     ```env
     PORT=3000
     MONGO_URI=mongodb://localhost:27017/edupay
-    JWT_SECRET=your_super_secret_key
+    JWT_SECRET=your_super_secret_jwt_key
+
+    # Email Configuration (for OTP) - Use a service like Mailtrap for development
+    EMAIL_HOST=smtp.mailtrap.io
+    EMAIL_PORT=2525
+    EMAIL_USERNAME=your_mailtrap_username
+    EMAIL_PASSWORD=your_mailtrap_password
     ```
 
 ---
 
 ## Usage
 
-1.  **Start the server**
+1.  **Start the development server**
     ```sh
-    npm start 
-    # or
-    node server.js
+    npm start
     ```
-2.  The server will start on `http://localhost:3000` (or the port you specified in `.env`).
+2.  The server will start on `http://localhost:3000` (or the port specified in `.env`).
 
 **API Endpoints Example:**
 *   `POST /api/auth/register` - Register a new user.
-*   `POST /api/auth/login` - Login a user and get a JWT token.
+*   `POST /api/auth/login` - Login an admin (with password) or request an OTP for a parent (with email).
+*   `POST /api/auth/verify-otp` - Verify the OTP for a parent to complete login and get a JWT token.
 *   `GET /api/students` - Fetch a list of students (protected route).
 
 ---
@@ -130,7 +136,10 @@ Make sure you have the following installed on your machine:
 | `PORT`       | The port on which the Express server will run.                              | `3000`                           |
 | `MONGO_URI`  | The connection string for your MongoDB database.                            | `mongodb://localhost:27017/edupay` |
 | `JWT_SECRET` | A secret key for signing JSON Web Tokens. Should be a long, random string.  | `your_super_secret_key`          |
-
+| `EMAIL_HOST` | The SMTP host for your email provider.                                      | `smtp.mailtrap.io`               |
+| `EMAIL_PORT` | The SMTP port for your email provider.                                      | `2525`                           |
+| `EMAIL_USERNAME` | The username for your SMTP provider.                                    | `your_mailtrap_username`         |
+| `EMAIL_PASSWORD` | The password for your SMTP provider.                                    | `your_mailtrap_password`         |
 ---
 
 ## Project Structure

@@ -1,4 +1,6 @@
-# EduPay - Project Documentation
+<p align="center">
+  <img src="../Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="80" height="80">
+</p>
 
 Welcome to the official documentation for EduPay, a smart digital fees payment and management system. This document provides a deep dive into the project's architecture, features, and future roadmap.
 

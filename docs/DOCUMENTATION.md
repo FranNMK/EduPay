@@ -102,3 +102,14 @@ The following features are planned for future development to enhance the capabil
     *   The backend will validate each row of data and then perform a bulk insert or update operation into the `Student` collection in the database.
 
 ---
+
+### 4.5 Mobile App & Payment Channel Expansion
+
+*   **Concept:** Develop a dedicated mobile application to provide a seamless user experience for parents and students, alongside expanding payment options to cater to a wider demographic, including those without smartphones.
+*   **Implementation:**
+    *   **Online Mobile Application:** Initial development will focus on an online mobile application (iOS/Android) allowing users to view fees, make payments, and access payment history directly from their smartphones.
+    *   **Offline Capabilities (Future Phase):** Enhance the mobile app to support certain offline functionalities, such as viewing cached fee details or generating payment requests that can be processed once an internet connection is restored.
+    *   **M-Pesa Integration:** Implement direct integration with M-Pesa, a popular mobile money service, to allow users to pay fees directly from their M-Pesa accounts. This will involve setting up M-Pesa APIs (e.g., Lipa na M-Pesa, STK Push) to facilitate secure and instant transactions.
+    *   **USSD Version:** Develop a USSD (Unstructured Supplementary Service Data) interface for basic payment functionalities. This will enable non-smartphone users or those with limited internet access to check fee balances and initiate payments through simple USSD codes, ensuring maximum inclusivity.
+
+---

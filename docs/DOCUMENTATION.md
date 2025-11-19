@@ -2,9 +2,13 @@
   <img src="../Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="120">
 </p>
 
-# EduPay - Project Documentation
+<p align="center">
+  # EduPay - Project Documentation
+</p>
 
-Welcome to the official documentation for EduPay, a smart digital fees payment and management system. This document provides a deep dive into the project's architecture, features, and future roadmap.
+<p align="center">
+  Welcome to the official documentation for EduPay, a smart digital fees payment and management system. This document provides a deep dive into the project's architecture, features, and future roadmap.
+</p>
 
 ---
 

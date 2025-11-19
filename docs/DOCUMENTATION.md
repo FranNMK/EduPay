@@ -2,8 +2,8 @@
   <img src="../Assets/Images/logo edu pay.jpg" alt="EduPay Logo" width="120">
 </p>
 
-<p align="center">
-  # EduPay - Project Documentation
+<p align="center" font-size="80px">
+   EduPay - Project Documentation
 </p>
 
 <p align="center">

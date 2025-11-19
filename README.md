@@ -9,7 +9,7 @@
   <p align="center">
     A smart digital fees payment and management system designed to streamline fee collection and administration for educational institutions.
     <br />
-    <a href="https://github.com/FranNMK/EduPay"><strong>Explore the docs »</strong></a>
+    <a href="./docs/DOCUMENTATION.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/FranNMK/EduPay/issues">Report Bug</a>

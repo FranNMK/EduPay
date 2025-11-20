@@ -112,7 +112,7 @@
                 <div class="bg-white p-6 rounded-xl shadow-lg">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-xl font-semibold text-gray-800">Student Fee Status (Real-Time)</h3>
-                        <button id="add-student-btn" onclick="document.getElementById('add-student-modal').classList.remove('hidden')" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md hover:bg-primary-dark transition duration-150 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                        <button id="add-student-btn" onclick="document.getElementById('add-student-modal').classList.remove('hidden')" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md hover:bg-primary-dark transition duration-150">
                             + Add New Student
                         </button>
                     </div>
@@ -193,16 +193,16 @@
                 <h4 class="text-md font-semibold text-gray-600 border-b pb-2 mb-4">Student Details</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="mb-4">
-                        <label for="studentName" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" id="studentName" name="studentName" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                        <label for="studentFullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="studentFullName" name="studentFullName" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
                     </div>
                     <div class="mb-4">
-                        <label for="studentClass" class="block text-sm font-medium text-gray-700">Class/Grade</label>
+                        <label for="studentId" class="block text-sm font-medium text-gray-700">Student ID / Admission No.</label>
+                        <input type="text" id="studentId" name="studentId" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="studentClass" class="block text-sm font-medium text-gray-700">Class</label>
                         <input type="text" id="studentClass" name="studentClass" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
-                    </div>
-                    <div class="mb-4">
-                        <label for="studentDOB" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-                        <input type="date" id="studentDOB" name="studentDOB" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
                     </div>
                     <div class="mb-4">
                         <label for="studentPhone" class="block text-sm font-medium text-gray-700">Student Phone (Optional)</label>
@@ -214,12 +214,16 @@
                 <h4 class="text-md font-semibold text-gray-600 border-b pb-2 my-4">Guardian & Contact Details</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="mb-4">
-                        <label for="guardianName" class="block text-sm font-medium text-gray-700">Guardian Name</label>
-                        <input type="text" id="guardianName" name="guardianName" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                        <label for="parentFullName" class="block text-sm font-medium text-gray-700">Guardian Name</label>
+                        <input type="text" id="parentFullName" name="parentFullName" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
                     </div>
                     <div class="mb-4">
-                        <label for="guardianPhone" class="block text-sm font-medium text-gray-700">Guardian Phone</label>
-                        <input type="tel" id="guardianPhone" name="guardianPhone" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                        <label for="parentPhone" class="block text-sm font-medium text-gray-700">Guardian Phone</label>
+                        <input type="tel" id="parentPhone" name="parentPhone" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="parentEmail" class="block text-sm font-medium text-gray-700">Guardian Email</label>
+                        <input type="email" id="parentEmail" name="parentEmail" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
                     </div>
                 </div>
 
@@ -248,7 +252,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
     <script>
         // Tailwind CSS Configuration with Brand Colors
         tailwind.config = {
@@ -265,32 +268,11 @@
         }
     </script>
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { API_BASE_URL } from '../../scripts/config.js';
-        import { getFirestore, collection, addDoc, onSnapshot, query, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // IMPORTANT: Set debug level for better console visibility
-        setLogLevel('debug');
-
-        // Global variables provided by the environment
-        const appId = 'default-app-id'; // Using a default App ID for static development
-        const initialAuthToken = null; // No initial token for static development, will use anonymous auth
-
-        // --- IMPORTANT ---
-        // Replace these placeholder values with your actual Firebase project configuration.
-        // You can find this in your Firebase project settings.
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-
-        let app, db, auth, userId = null;
-        let isAuthReady = false;
+        // This will be your backend API URL.
+        // Make sure it's correctly defined in your config.js or set it here.
+        // const API_BASE_URL = 'http://localhost:5000';
 
         const studentTableBody = document.getElementById('student-table-body');
         const loadingIndicator = document.getElementById('loading');
@@ -306,74 +288,16 @@
             return `KES ${new Intl.NumberFormat('en-KE').format(amount)}`;
         };
 
-        // --- 1. INITIALIZE FIREBASE AND AUTHENTICATE ---
-        const initializeFirebase = async () => {
-            try {
-                if (Object.keys(firebaseConfig).length === 0) {
-                    throw new Error("Firebase config not available.");
-                }
-
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                
-                // Sign in using the custom token or anonymously
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                // Set up auth state change listener
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        userId = user.uid;
-                        isAuthReady = true;
-                        userInfo.textContent = `User ID: ${userId} | App ID: ${appId}`;
-                        console.log("Firebase Auth Ready. User ID:", userId);
-                        document.getElementById('add-student-btn').disabled = false; // Enable the button
-                        // Once authenticated, start listening for data
-                        loadDashboardData();
-                    } else {
-                        isAuthReady = true; // Still ready, but anonymous
-                        userId = crypto.randomUUID(); // Fallback ID for data path
-                        userInfo.textContent = `User ID: ${userId} (Anonymous/Fallback) | App ID: ${appId}`;
-                        console.warn("Signed out or anonymous user. Using fallback ID:", userId);
-                        document.getElementById('add-student-btn').disabled = false; // Enable the button
-                        loadDashboardData();
-                    }
-                });
-
-            } catch (error) {
-                console.error("Firebase Initialization or Authentication Error:", error);
-                userInfo.textContent = `Status: Error - ${error.message}`;
-                loadingIndicator.classList.add('hidden');
-            }
-        };
-
-        // --- 2. FIRESTORE DATA HANDLING ---
-        const getCollectionPath = (collectionName) => {
-            if (!userId) {
-                console.error("User ID not available for collection path.");
-                return null;
-            }
-            // Private data path: /artifacts/{appId}/users/{userId}/{collectionName}
-            return `artifacts/${appId}/users/${userId}/${collectionName}`;
-        };
-
         const loadDashboardData = () => {
-            if (!isAuthReady || !userId) {
-                console.warn("Auth not ready or User ID missing. Cannot load data.");
-                return;
-            }
+            // This function will now fetch data from your MongoDB backend.
+            // For now, we'll leave it as a placeholder.
+            console.log("Fetching dashboard data from MongoDB backend...");
 
-            const path = getCollectionPath('school_students');
-            if (!path) return;
-
-            const studentsCollection = collection(db, path);
-
-            // Real-time listener for student data
-            onSnapshot(query(studentsCollection), (snapshot) => {
+            // Example of how you might fetch and render data in the future:
+            /*
+            fetch(`${API_BASE_URL}/api/students`)
+                .then(res => res.json())
+                .then(data => {
                 const students = [];
                 let totalDueSum = 0;
                 let amountPaidSum = 0;
@@ -381,23 +305,20 @@
                 const classes = new Set();
 
                 snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const student = { id: doc.id, ...data };
+                    const student = { id: doc._id, ...doc };
                     students.push(student);
                     totalDueSum += student.totalDue || 0;
                     amountPaidSum += student.amountPaid || 0;
                     if (student.class) classes.add(student.class);
                 });
-
                 populateClassFilter(classes);
                 renderDashboard(students, totalDueSum, amountPaidSum);
-            }, (error) => {
-                console.error("Error fetching real-time student data:", error);
+            }).catch(error => {
+                console.error("Error fetching student data:", error);
                 loadingIndicator.classList.add('hidden');
             });
+            */
         };
-
-        // --- 3. FILTERING AND RENDERING ---
         const populateClassFilter = (classes) => {
             const currentOptions = new Set([...filterClass.options].map(o => o.value));
             classes.forEach(c => {
@@ -410,8 +331,6 @@
             });
         };
 
-
-        // --- 3. RENDERING FUNCTIONS ---
         const renderDashboard = (students, totalDueSum, amountPaidSum) => {
             const outstandingSum = totalDueSum - amountPaidSum;
 
@@ -424,7 +343,7 @@
             renderStudentTable(students);
 
             // Hide loading, show content
-            loadingIndicator.style.display = 'none';
+            loadingIndicator.classList.add('hidden');
             switchContent('dashboard'); // Show the dashboard by default
         };
 
@@ -468,7 +387,7 @@
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-gray-50';
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.fullName}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${student.class}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(student.totalDue)}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(student.amountPaid)}</td>
@@ -485,7 +404,6 @@
             });
         };
 
-        // --- 4. NAVIGATION & ACTION HANDLERS ---
         const switchContent = (targetId) => {
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active-content');
@@ -527,42 +445,30 @@
             formMessage.classList.add('hidden');
             
             const formData = new FormData(addStudentForm);
+            // Correctly get data from the form using the 'name' attributes
             const newStudent = {
-                // Student Details
-                name: formData.get('studentName').trim(),
-                class: formData.get('studentClass').trim(),
-                dob: formData.get('studentDOB'),
-                phone: formData.get('studentPhone').trim(),
-                // Guardian Details
-                guardianName: formData.get('guardianName').trim(),
-                guardianPhone: formData.get('guardianPhone').trim(),
-                // Fee Details
+                studentFullName: formData.get('studentFullName').trim(),
+                studentId: formData.get('studentId').trim(),
+                studentClass: formData.get('studentClass').trim(),
+                parentFullName: formData.get('parentFullName').trim(),
+                parentPhone: formData.get('parentPhone').trim(),
+                parentEmail: formData.get('parentEmail').trim(),
                 totalDue: parseFloat(formData.get('totalDue')),
                 amountPaid: parseFloat(formData.get('amountPaid')),
-                dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0], // Mock due date: 1 month from now
-                dateAdded: new Date().toISOString(),
             };
 
-            if (newStudent.name === '' || newStudent.class === '' || !newStudent.dob || newStudent.guardianName === '' || newStudent.guardianPhone === '' || isNaN(newStudent.totalDue) || isNaN(newStudent.amountPaid)) {
+            // Corrected validation logic
+            if (!newStudent.studentFullName || !newStudent.studentId || !newStudent.studentClass || !newStudent.parentFullName || !newStudent.parentPhone || !newStudent.parentEmail || isNaN(newStudent.totalDue)) {
                 formMessage.textContent = "Please fill out all fields correctly.";
                 formMessage.classList.remove('hidden');
                 return;
             }
 
-            if (newStudent.amountPaid > newStudent.totalDue) {
-                 formMessage.textContent = "Amount Paid cannot exceed Total Due.";
-                 formMessage.classList.remove('hidden');
-                 return;
-            }
-
             try {
-                // --- NEW: Send data to your MongoDB backend via fetch ---
                 const response = await fetch(`${API_BASE_URL}/api/students`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        // If your endpoint is protected, you'll need to send a token
-                        // 'Authorization': `Bearer ${localStorage.getItem('edupayToken')}`
                     },
                     body: JSON.stringify(newStudent)
                 });
@@ -571,9 +477,10 @@
                     // Success actions
                     addStudentForm.reset();
                     document.getElementById('add-student-modal').classList.add('hidden');
-                    console.log("New student sent to MongoDB backend successfully:", newStudent.name);
-                    // The real-time listener for Firestore will automatically update the table.
-                    // If you switch fully to MongoDB, you'll need to manually refresh the data here.
+                    alert('Student added successfully!');
+                    console.log("New student added successfully:", newStudent.studentFullName);
+                    // In the future, you would call a function here to refresh the student list
+                    // loadDashboardData(); 
                 } else {
                     const errorData = await response.json();
                     throw new Error(errorData.message || "Failed to add student.");
@@ -600,12 +507,24 @@
         });
 
 
-        // --- 5. START APPLICATION ---
-        initializeFirebase();
+        // --- START APPLICATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            userInfo.textContent = `Status: Connected`;
+            // Hide the main loading spinner
+            loadingIndicator.classList.add('hidden');
+            // Show the dashboard content section by default
+            switchContent('dashboard');
+            // You can load initial data from your backend here if you want
+            // loadDashboardData();
+        });
 
         // Global logout function
         window.logout = () => {
-            alert("Logout functionality placeholder.");
+            if (confirm("Are you sure you want to log out?")) {
+                // In a real app, you would clear tokens/session here
+                console.log("Logging out...");
+                window.location.href = '../../../index.html'; // Redirect to home or login page
+            }
         };
     </script>
 </body>

@@ -291,7 +291,7 @@ class AuthModal extends HTMLElement {
                         status.textContent = 'Login successful! Redirecting...';
                         status.style.color = 'var(--color-success)';
                         setTimeout(() => {
-                            window.location.href = 'FrontEnd/html-files/dasbboard/admin.html';
+                            window.location.href = 'FrontEnd/html-files/dasbboard/school-admin.html';
                         }, 1000);
                     } else {
                         status.textContent = `Login failed: ${data.message || 'Invalid credentials.'}`;

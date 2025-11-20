@@ -18,8 +18,12 @@ Before you begin testing, please ensure the following:
     *   Open the `index.html` file in your web browser (e.g., by using a Live Server extension in VS Code or by double-clicking the file).
 
 3.  **Test Credentials:**
-    *   Have a valid **Admin** username and password ready.
-    *   Have a valid **Parent/Student** email address that is registered in the system.
+    Use the following credentials for testing. Note that these users must exist in the database.
+    *   **Admin User:**
+        *   Email: `admin@edupay.com`
+        *   Password: `admin123`
+    *   **Parent/Student User:**
+        *   Email: `student@example.com`
 
 ---
 

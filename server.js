@@ -34,6 +34,7 @@ const authMiddleware = (req, res, next) => {
 
 // Make sure your routes folder and files exist in the same directory
 app.use('/api/students', authMiddleware, require('./routes/students'));
+app.use('/api/payments', authMiddleware, require('./routes/payments'));
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

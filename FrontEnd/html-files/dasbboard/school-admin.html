@@ -161,8 +161,49 @@
 
             <!-- Other Content Sections (Initially Hidden) -->
             <section id="payments" class="content-section">
-                <h2 class="text-3xl font-semibold text-gray-800">Payments</h2>
-                <p class="text-gray-500 mt-1">Real-time payment feed and manual entry.</p>
+                <header class="mb-8">
+                    <h2 class="text-3xl font-semibold text-gray-800">Payment History</h2>
+                    <p class="text-sm text-gray-500 mt-1">View all transactions processed for your institution.</p>
+                </header>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <!-- Filter Controls -->
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-4">
+                        <div class="flex-1">
+                            <label for="payment-filter-date" class="text-xs text-gray-600">Filter by Date</label>
+                            <input type="date" id="payment-filter-date" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border text-sm">
+                        </div>
+                        <div class="flex-1">
+                            <label for="payment-filter-status" class="text-xs text-gray-600">Filter by Status</label>
+                            <select id="payment-filter-status" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border text-sm">
+                                <option value="all">All Statuses</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Failed">Failed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payments-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Payment rows will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="no-payments-message" class="hidden text-center p-8 text-gray-500">
+                        No payment data found.
+                    </div>
+                </div>
             </section>
             <section id="students" class="content-section">
                 <h2 class="text-3xl font-semibold text-gray-800">Student Management</h2>
@@ -283,6 +324,10 @@
         const filterClass = document.getElementById('filter-class');
         const filterStatus = document.getElementById('filter-status');
 
+        // --- NEW: Elements for Payments Tab ---
+        const paymentsTableBody = document.getElementById('payments-table-body');
+        const noPaymentsMessage = document.getElementById('no-payments-message');
+
         // Helper function for currency formatting
         const formatCurrency = (amount) => {
             return `KES ${new Intl.NumberFormat('en-KE').format(amount)}`;
@@ -290,10 +335,10 @@
 
         const loadDashboardData = () => {
             // This function will now fetch data from your MongoDB backend.
-            // For now, we'll leave it as a placeholder.
             console.log("Fetching dashboard data from MongoDB backend...");
+            loadingIndicator.classList.remove('hidden');
 
-            // Example of how you might fetch and render data in the future:
+            // In a real app, you would fetch students for the main dashboard here.
             /*
             fetch(`${API_BASE_URL}/api/students`)
                 .then(res => res.json())
@@ -319,6 +364,54 @@
             });
             */
         };
+        const populateClassFilter = (classes) => {
+            // ... (existing code)
+        };
+
+        // --- NEW: Function to load and render payments ---
+        const loadPaymentsData = async () => {
+            if (!paymentsTableBody) return;
+
+            paymentsTableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4">Loading payments...</td></tr>`;
+            noPaymentsMessage.classList.add('hidden');
+
+            try {
+                // We will create this API endpoint next
+                const response = await fetch(`${API_BASE_URL}/api/payments`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch payments.');
+                }
+                const payments = await response.json();
+
+                paymentsTableBody.innerHTML = ''; // Clear loading message
+
+                if (payments.length === 0) {
+                    noPaymentsMessage.classList.remove('hidden');
+                    return;
+                }
+
+                payments.forEach(payment => {
+                    const statusClass = payment.status === 'Completed' ? 'text-green-600' : payment.status === 'Pending' ? 'text-yellow-600' : 'text-red-600';
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(payment.paymentDate).toLocaleDateString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${payment.student?.fullName || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(payment.amount)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold ${statusClass}">${payment.status}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="#" class="text-primary hover:text-primary-dark">View Receipt</a>
+                        </td>
+                    `;
+                    paymentsTableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Error fetching payments:", error);
+                paymentsTableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500">Error loading payments.</td></tr>`;
+            }
+        };
+
         const populateClassFilter = (classes) => {
             const currentOptions = new Set([...filterClass.options].map(o => o.value));
             classes.forEach(c => {
@@ -418,6 +511,11 @@
                 if (link.getAttribute('href').substring(1) === targetId) {
                     link.classList.add('active');
                 }
+            });
+
+            // --- NEW: Load data when switching to the payments tab ---
+            if (targetId === 'payments') {
+                loadPaymentsData();
             });
         };
 

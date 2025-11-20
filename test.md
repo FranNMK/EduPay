@@ -21,7 +21,7 @@ Before you begin testing, please ensure the following:
     Use the following credentials for testing. Note that these users must be created in the database for the tests to work.
     *   **Admin User:**
         *   Email: `frankmk2025@gmail.com`
-        *   Password: `admin123`
+        *   Password: `1234567890`
     *   **Parent User:**
         *   Email: `parent@test.com`
     *   **Student User:**

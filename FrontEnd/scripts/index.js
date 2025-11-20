@@ -1,8 +1,8 @@
 // Data for the image slider (Use 10-20 images as per spec)
 const sliderImages = [
-    'Assets/Images/im2.jpg',
-    'Assets/Images/image 1.jpg',
-    'Assets/Images/logo edu pay.jpg',
+    'FrontEnd/Assets/Images/im2.jpg',
+    'FrontEnd/Assets/Images/image 1.jpg',
+    'FrontEnd/Assets/Images/logo edu pay.jpg',
     // Add remaining images here using forward slashes and URL-encoded spaces if needed
 ];
 

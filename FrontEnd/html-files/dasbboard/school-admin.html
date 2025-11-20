@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Admin Dashboard | EduPay</title>
+    <link rel="shortcut icon" href="../../../Assets/Images/logo edu pay.jpg" type="image/x-icon">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Use Inter font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        /* Simple class to hide/show content sections */
+        .content-section:not(.active-content) {
+            display: none;
+        }
+        /* Style for active nav link */
+        .sidebar-nav a.active {
+            background-color: #6a3f5f; /* Brand Primary Color */
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Main Application Container -->
+    <div id="app" class="flex flex-col lg:flex-row min-h-screen">
+
+        <!-- Sidebar -->
+        <aside class="w-full lg:w-64 bg-gray-800 text-white p-4 space-y-6 flex flex-row lg:flex-col justify-between items-center lg:items-stretch shadow-xl">
+            <div class="flex items-center space-x-3">
+                <img src="../../../Assets/Images/logo edu pay.jpg" alt="EduPay Logo" class="h-10 w-10 rounded-full">
+                <h1 class="text-xl font-bold">School Admin</h1>
+            </div>
+
+            <nav class="sidebar-nav flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2 flex-grow mt-6">
+                <a href="#dashboard" class="flex items-center space-x-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-tachometer-alt w-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#payments" class="flex items-center space-x-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-receipt w-5 text-center"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="#students" class="flex items-center space-x-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-users w-5 text-center"></i>
+                    <span>Students</span>
+                </a>
+                <a href="#reports" class="flex items-center space-x-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-chart-bar w-5 text-center"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#payouts" class="flex items-center space-x-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-university w-5 text-center"></i>
+                    <span>Payouts</span>
+                </a>
+                <a href="#settings" class="flex items-center space-x-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-700 transition duration-150">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <button onclick="logout()" class="w-full flex items-center justify-center space-x-3 px-3 py-2 rounded-lg font-medium bg-red-600 hover:bg-red-700 transition duration-150">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 lg:p-10">
+
+            <!-- Loading Indicator -->
+            <div id="loading" class="text-center p-8">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                <p class="mt-4 text-indigo-600">Loading dashboard data...</p>
+            </div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section">
+                <header class="mb-8">
+                    <h2 class="text-3xl font-semibold text-gray-800">School Finance Overview</h2>
+                    <p id="user-info" class="text-sm text-gray-500 mt-1">Status: Initializing...</p>
+                </header>
+                <!-- Metrics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <!-- SA1: Core Financial KPIs -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-primary transition duration-300 hover:shadow-2xl">
+                        <p class="text-sm font-medium text-gray-500">Total Fees Due</p>
+                        <p id="metric-total-due" class="text-3xl font-bold text-gray-900 mt-1">$0.00</p>
+                        <p class="text-xs text-gray-400 mt-2">Based on current fee schedule</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500 transition duration-300 hover:shadow-2xl">
+                        <p class="text-sm font-medium text-gray-500">Total Collected YTD</p>
+                        <p id="metric-collected" class="text-3xl font-bold text-green-600 mt-1">$0.00</p>
+                        <p class="text-xs text-gray-400 mt-2">All confirmed payments</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-accent-pink transition duration-300 hover:shadow-2xl">
+                        <p class="text-sm font-medium text-gray-500">Total Outstanding Debt</p>
+                        <p id="metric-outstanding" class="text-3xl font-bold text-red-600 mt-1">$0.00</p>
+                        <p class="text-xs text-gray-400 mt-2">Calculated difference</p>
+                    </div>
+                </div>
+
+                <!-- Main Data Table -->
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-semibold text-gray-800">Student Fee Status (Real-Time)</h3>
+                        <button id="add-student-btn" onclick="document.getElementById('add-student-modal').classList.remove('hidden')" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md hover:bg-primary-dark transition duration-150 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                            + Add New Student
+                        </button>
+                    </div>
+
+                    <!-- SA4: Filter Controls -->
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-4">
+                        <div class="flex-1">
+                            <label for="filter-class" class="text-xs text-gray-600">Filter by Class</label>
+                            <select id="filter-class" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border text-sm">
+                                <option value="all">All Classes</option>
+                            </select>
+                        </div>
+                        <div class="flex-1">
+                            <label for="filter-status" class="text-xs text-gray-600">Filter by Status</label>
+                            <select id="filter-status" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border text-sm">
+                                <option value="all">All Statuses</option>
+                                <option value="paid">Paid</option>
+                                <option value="outstanding">Outstanding</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Due</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount Paid</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Outstanding</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Overdue</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Student rows will be injected here by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="no-data-message" class="hidden text-center p-8 text-gray-500">
+                        No student data found. Add your first student to get started!
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other Content Sections (Initially Hidden) -->
+            <section id="payments" class="content-section">
+                <h2 class="text-3xl font-semibold text-gray-800">Payments</h2>
+                <p class="text-gray-500 mt-1">Real-time payment feed and manual entry.</p>
+            </section>
+            <section id="students" class="content-section">
+                <h2 class="text-3xl font-semibold text-gray-800">Student Management</h2>
+                <p class="text-gray-500 mt-1">View and manage all student records.</p>
+            </section>
+            <section id="reports" class="content-section">
+                <h2 class="text-3xl font-semibold text-gray-800">Reports & Analytics</h2>
+                <p class="text-gray-500 mt-1">Generate audit reports and view collection health.</p>
+            </section>
+            <section id="payouts" class="content-section">
+                <h2 class="text-3xl font-semibold text-gray-800">Payouts to Bank</h2>
+                <p class="text-gray-500 mt-1">Track the status of funds transferred to your school's bank account.</p>
+            </section>
+            <section id="settings" class="content-section">
+                <h2 class="text-3xl font-semibold text-gray-800">Settings</h2>
+                <p class="text-gray-500 mt-1">Configure school-specific settings.</p>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal for Adding Student -->
+    <div id="add-student-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-50 flex items-center justify-center overflow-y-auto py-10">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-lg">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Add New Student</h3>
+            <form id="add-student-form">
+                <!-- Student Personal Details -->
+                <h4 class="text-md font-semibold text-gray-600 border-b pb-2 mb-4">Student Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="studentName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="studentName" name="studentName" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="studentClass" class="block text-sm font-medium text-gray-700">Class/Grade</label>
+                        <input type="text" id="studentClass" name="studentClass" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="studentDOB" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                        <input type="date" id="studentDOB" name="studentDOB" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="studentPhone" class="block text-sm font-medium text-gray-700">Student Phone (Optional)</label>
+                        <input type="tel" id="studentPhone" name="studentPhone" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                </div>
+
+                <!-- Guardian & Contact Details -->
+                <h4 class="text-md font-semibold text-gray-600 border-b pb-2 my-4">Guardian & Contact Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="guardianName" class="block text-sm font-medium text-gray-700">Guardian Name</label>
+                        <input type="text" id="guardianName" name="guardianName" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="guardianPhone" class="block text-sm font-medium text-gray-700">Guardian Phone</label>
+                        <input type="tel" id="guardianPhone" name="guardianPhone" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                </div>
+
+                <!-- Fee Details -->
+                <h4 class="text-md font-semibold text-gray-600 border-b pb-2 my-4">Fee Details</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="totalDue" class="block text-sm font-medium text-gray-700">Total Fees Due (KES)</label>
+                        <input type="number" id="totalDue" name="totalDue" required min="1" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                    <div class="mb-4">
+                        <label for="amountPaid" class="block text-sm font-medium text-gray-700">Amount Paid (KES)</label>
+                        <input type="number" id="amountPaid" name="amountPaid" value="0" min="0" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary focus:ring-primary p-2 border">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="document.getElementById('add-student-modal').classList.add('hidden')" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg shadow-md hover:bg-primary-dark transition duration-150">
+                        Save Student
+                    </button>
+                </div>
+            </form>
+            <p id="form-message" class="text-sm mt-3 text-center text-red-500 hidden"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script>
+        // Tailwind CSS Configuration with Brand Colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6a3f5f', // Deep Purple
+                        'primary-dark': '#523049',
+                        'accent-pink': '#e76caa',
+                        'accent-green': '#b0ce5c',
+                    }
+                }
+            }
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { API_BASE_URL } from '../../scripts/config.js';
+        import { getFirestore, collection, addDoc, onSnapshot, query, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // IMPORTANT: Set debug level for better console visibility
+        setLogLevel('debug');
+
+        // Global variables provided by the environment
+        const appId = 'default-app-id'; // Using a default App ID for static development
+        const initialAuthToken = null; // No initial token for static development, will use anonymous auth
+
+        // --- IMPORTANT ---
+        // Replace these placeholder values with your actual Firebase project configuration.
+        // You can find this in your Firebase project settings.
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        let app, db, auth, userId = null;
+        let isAuthReady = false;
+
+        const studentTableBody = document.getElementById('student-table-body');
+        const loadingIndicator = document.getElementById('loading');
+        const userInfo = document.getElementById('user-info');
+        const noDataMessage = document.getElementById('no-data-message');
+        const addStudentForm = document.getElementById('add-student-form');
+        const formMessage = document.getElementById('form-message');
+        const filterClass = document.getElementById('filter-class');
+        const filterStatus = document.getElementById('filter-status');
+
+        // Helper function for currency formatting
+        const formatCurrency = (amount) => {
+            return `KES ${new Intl.NumberFormat('en-KE').format(amount)}`;
+        };
+
+        // --- 1. INITIALIZE FIREBASE AND AUTHENTICATE ---
+        const initializeFirebase = async () => {
+            try {
+                if (Object.keys(firebaseConfig).length === 0) {
+                    throw new Error("Firebase config not available.");
+                }
+
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                // Sign in using the custom token or anonymously
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // Set up auth state change listener
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        isAuthReady = true;
+                        userInfo.textContent = `User ID: ${userId} | App ID: ${appId}`;
+                        console.log("Firebase Auth Ready. User ID:", userId);
+                        document.getElementById('add-student-btn').disabled = false; // Enable the button
+                        // Once authenticated, start listening for data
+                        loadDashboardData();
+                    } else {
+                        isAuthReady = true; // Still ready, but anonymous
+                        userId = crypto.randomUUID(); // Fallback ID for data path
+                        userInfo.textContent = `User ID: ${userId} (Anonymous/Fallback) | App ID: ${appId}`;
+                        console.warn("Signed out or anonymous user. Using fallback ID:", userId);
+                        document.getElementById('add-student-btn').disabled = false; // Enable the button
+                        loadDashboardData();
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase Initialization or Authentication Error:", error);
+                userInfo.textContent = `Status: Error - ${error.message}`;
+                loadingIndicator.classList.add('hidden');
+            }
+        };
+
+        // --- 2. FIRESTORE DATA HANDLING ---
+        const getCollectionPath = (collectionName) => {
+            if (!userId) {
+                console.error("User ID not available for collection path.");
+                return null;
+            }
+            // Private data path: /artifacts/{appId}/users/{userId}/{collectionName}
+            return `artifacts/${appId}/users/${userId}/${collectionName}`;
+        };
+
+        const loadDashboardData = () => {
+            if (!isAuthReady || !userId) {
+                console.warn("Auth not ready or User ID missing. Cannot load data.");
+                return;
+            }
+
+            const path = getCollectionPath('school_students');
+            if (!path) return;
+
+            const studentsCollection = collection(db, path);
+
+            // Real-time listener for student data
+            onSnapshot(query(studentsCollection), (snapshot) => {
+                const students = [];
+                let totalDueSum = 0;
+                let amountPaidSum = 0;
+
+                const classes = new Set();
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const student = { id: doc.id, ...data };
+                    students.push(student);
+                    totalDueSum += student.totalDue || 0;
+                    amountPaidSum += student.amountPaid || 0;
+                    if (student.class) classes.add(student.class);
+                });
+
+                populateClassFilter(classes);
+                renderDashboard(students, totalDueSum, amountPaidSum);
+            }, (error) => {
+                console.error("Error fetching real-time student data:", error);
+                loadingIndicator.classList.add('hidden');
+            });
+        };
+
+        // --- 3. FILTERING AND RENDERING ---
+        const populateClassFilter = (classes) => {
+            const currentOptions = new Set([...filterClass.options].map(o => o.value));
+            classes.forEach(c => {
+                if (!currentOptions.has(c)) {
+                    const option = document.createElement('option');
+                    option.value = c;
+                    option.textContent = c;
+                    filterClass.appendChild(option);
+                }
+            });
+        };
+
+
+        // --- 3. RENDERING FUNCTIONS ---
+        const renderDashboard = (students, totalDueSum, amountPaidSum) => {
+            const outstandingSum = totalDueSum - amountPaidSum;
+
+            // Update Metrics Cards (SA1)
+            document.getElementById('metric-total-due').textContent = formatCurrency(totalDueSum);
+            document.getElementById('metric-collected').textContent = formatCurrency(amountPaidSum);
+            document.getElementById('metric-outstanding').textContent = formatCurrency(outstandingSum);
+
+            // Update Table
+            renderStudentTable(students);
+
+            // Hide loading, show content
+            loadingIndicator.style.display = 'none';
+            switchContent('dashboard'); // Show the dashboard by default
+        };
+
+        const renderStudentTable = (students) => {
+            // Apply filters before rendering
+            const classFilterValue = filterClass.value;
+            const statusFilterValue = filterStatus.value;
+
+            const filteredStudents = students.filter(student => {
+                const outstanding = student.totalDue - student.amountPaid;
+                const status = outstanding > 0 ? 'outstanding' : 'paid';
+
+                const classMatch = classFilterValue === 'all' || student.class === classFilterValue;
+                const statusMatch = statusFilterValue === 'all' || status === statusFilterValue;
+
+                return classMatch && statusMatch;
+            });
+
+            studentTableBody.innerHTML = ''; // Clear existing rows
+
+            if (filteredStudents.length === 0) {
+                noDataMessage.classList.remove('hidden');
+                noDataMessage.textContent = students.length === 0 ? "No student data found. Add your first student!" : "No students match the current filters.";
+                return;
+            }
+            noDataMessage.classList.add('hidden');
+
+            filteredStudents.forEach(student => {
+                const outstanding = student.totalDue - student.amountPaid;
+                
+                // Calculate Days Overdue (SA4)
+                let daysOverdue = 0;
+                if (outstanding > 0 && student.dueDate) {
+                    const dueDate = new Date(student.dueDate);
+                    const today = new Date();
+                    if (today > dueDate) {
+                        daysOverdue = Math.floor((today - dueDate) / (1000 * 60 * 60 * 24));
+                    }
+                }
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${student.class}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(student.totalDue)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCurrency(student.amountPaid)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold ${outstanding > 0 ? 'text-red-600' : 'text-green-600'}">${formatCurrency(outstanding)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm ${daysOverdue > 0 ? 'text-red-600 font-bold' : 'text-gray-500'}">${daysOverdue > 0 ? daysOverdue : 'N/A'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        ${outstanding > 0 ? `
+                        <button onclick="sendReminder('${student.id}', '${student.name}')" class="text-primary hover:text-primary-dark transition duration-150">
+                            Send Reminder
+                        </button>` : `<span class="text-gray-400">No Action</span>`}
+                    </td>
+                `;
+                studentTableBody.appendChild(row);
+            });
+        };
+
+        // --- 4. NAVIGATION & ACTION HANDLERS ---
+        const switchContent = (targetId) => {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active-content');
+            });
+            const activeSection = document.getElementById(targetId);
+            if (activeSection) {
+                activeSection.classList.add('active-content');
+            }
+
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === targetId) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        // Global function for demonstration (needs to be attached to window)
+        window.sendReminder = (studentId, studentName) => {
+            // In a real app, this would trigger an SMS or email service.
+            console.log(`Simulating Fee Reminder sent for Student ID: ${studentId}, Name: ${studentName}`);
+            
+            // Show a temporary message to the user
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Sent!';
+            button.disabled = true;
+            button.classList.add('opacity-50');
+
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.disabled = false;
+                button.classList.remove('opacity-50');
+            }, 2000);
+        };
+
+        addStudentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formMessage.classList.add('hidden');
+            
+            const formData = new FormData(addStudentForm);
+            const newStudent = {
+                // Student Details
+                name: formData.get('studentName').trim(),
+                class: formData.get('studentClass').trim(),
+                dob: formData.get('studentDOB'),
+                phone: formData.get('studentPhone').trim(),
+                // Guardian Details
+                guardianName: formData.get('guardianName').trim(),
+                guardianPhone: formData.get('guardianPhone').trim(),
+                // Fee Details
+                totalDue: parseFloat(formData.get('totalDue')),
+                amountPaid: parseFloat(formData.get('amountPaid')),
+                dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0], // Mock due date: 1 month from now
+                dateAdded: new Date().toISOString(),
+            };
+
+            if (newStudent.name === '' || newStudent.class === '' || !newStudent.dob || newStudent.guardianName === '' || newStudent.guardianPhone === '' || isNaN(newStudent.totalDue) || isNaN(newStudent.amountPaid)) {
+                formMessage.textContent = "Please fill out all fields correctly.";
+                formMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (newStudent.amountPaid > newStudent.totalDue) {
+                 formMessage.textContent = "Amount Paid cannot exceed Total Due.";
+                 formMessage.classList.remove('hidden');
+                 return;
+            }
+
+            try {
+                // --- NEW: Send data to your MongoDB backend via fetch ---
+                const response = await fetch(`${API_BASE_URL}/api/students`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // If your endpoint is protected, you'll need to send a token
+                        // 'Authorization': `Bearer ${localStorage.getItem('edupayToken')}`
+                    },
+                    body: JSON.stringify(newStudent)
+                });
+
+                if (response.ok) {
+                    // Success actions
+                    addStudentForm.reset();
+                    document.getElementById('add-student-modal').classList.add('hidden');
+                    console.log("New student sent to MongoDB backend successfully:", newStudent.name);
+                    // The real-time listener for Firestore will automatically update the table.
+                    // If you switch fully to MongoDB, you'll need to manually refresh the data here.
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || "Failed to add student.");
+                }
+
+            } catch (error) {
+                console.error("Error adding student document:", error);
+                formMessage.textContent = `Error: ${error.message}`;
+                formMessage.classList.remove('hidden');
+            }
+        });
+
+        // Add event listeners for filters
+        filterClass.addEventListener('change', () => loadDashboardData());
+        filterStatus.addEventListener('change', () => loadDashboardData());
+
+        // Add event listeners for sidebar navigation
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                switchContent(targetId);
+            });
+        });
+
+
+        // --- 5. START APPLICATION ---
+        initializeFirebase();
+
+        // Global logout function
+        window.logout = () => {
+            alert("Logout functionality placeholder.");
+        };
+    </script>
+</body>
+</html>

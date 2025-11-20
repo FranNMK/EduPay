@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../config.js';
+import { API_BASE_URL } from './config.js';
 
 class MyHeader extends HTMLElement {
     connectedCallback() {
@@ -96,38 +96,54 @@ customElements.define('my-footer', MyFooter);
 
 class AuthModal extends HTMLElement {
     connectedCallback() {
+        const isSubfolder = window.location.pathname.includes('/html-files/');
+        const assetsPath = isSubfolder ? '../Assets/' : 'FrontEnd/Assets/';
+
         this.innerHTML = `
             <div id="auth-modal" class="modal">
-                <div class="modal-content">
+                <div class="modal-content" style="text-align: center;">
                     <span class="close-button">&times;</span>
+                    <!-- 1. EduPay Logo Added with corrected dynamic path -->
+                    <img src="${assetsPath}Images/logo edu pay.jpg" alt="EduPay Logo" style="width: 80px; margin-bottom: 10px;">
                     <div class="modal-header">
                         <h2 id="modal-title">Welcome to EduPay</h2>
                         <div class="role-selector">
                             <button class="role-btn active" data-role="parent">Parent/Student</button>
                             <button class="role-btn" data-role="admin">School Admin</button>
-                            <button class="role-btn" data-role="superadmin">Super Admin</button>
+                            <button class="role-btn" data-role="super-admin">Super Admin</button>
                         </div>
                     </div>
                     <div class="auth-box">
-                        <form id="login-form" class="auth-form" autocomplete="off">
-                            <h3>Login with OTP</h3>
+                        <!-- 2. Updated Login Form Structure -->
+                        <form id="login-form" class="auth-form active-form" autocomplete="off">
                             <div class="form-group">
                                 <label for="login-identifier">Email or Phone Number</label>
                                 <input type="text" id="login-identifier" placeholder="e.g., user@example.com or +2547..." required>
                             </div>
+                            <!-- OTP field - shown for parents -->
                             <div id="otp-group" class="form-group" style="display: none;">
                                 <label for="otp-code">Verification Code</label>
                                 <input type="text" id="otp-code" pattern="\\d{6}" maxlength="6" placeholder="Enter 6-digit code">
                             </div>
-                            <button type="submit" class="large-cta">Request OTP</button>
+                            <!-- Password field - shown for admins -->
+                            <div id="password-group" class="form-group" style="display: none;">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" placeholder="Enter your password">
+                            </div>
+                            <button type="submit" class="large-cta" id="login-submit-btn">Request OTP</button>
                             <p class="auth-switch">Don't have an account? <a href="#" class="switch-to-register">Request Registration</a></p>
                             <p id="login-status" class="status-message"></p>
                         </form>
-                        <form id="register-form" class="auth-form">
+
+                        <form id="register-form" class="auth-form" style="display: none;">
                             <h3 id="register-title">Request Parent/Student Registration</h3>
                             <div class="form-group">
                                 <label for="reg-name">Full Name</label>
                                 <input type="text" id="reg-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Your Email Address</label>
+                                <input type="email" id="reg-email" required>
                             </div>
                             <div class="form-group">
                                 <label for="reg-school">School Name</label>
@@ -195,7 +211,7 @@ class AuthModal extends HTMLElement {
             const otpInput = this.querySelector('#otp-code');
             const status = this.querySelector('#login-status');
             const submitButton = this.querySelector('#login-form button[type="submit"]');
-            const selectedRole = this.querySelector('.role-btn.active')?.dataset.role || 'parent';
+            const passwordGroup = this.querySelector('#password-group');
 
             status.style.display = 'block';
 
@@ -208,15 +224,31 @@ class AuthModal extends HTMLElement {
                     return;
                 }
 
+                // --- SIMULATION CHECK FOR OTP VERIFICATION ---
+                const testEmails = ['parent@test.com', 'student@test.com'];
+                const enteredEmail = identifierInput.value.trim();
+
+                if (testEmails.includes(enteredEmail) && otpCode === '123456') {
+                    status.textContent = 'SIMULATION: Login successful! Redirecting...';
+                    status.style.color = 'var(--color-success)';
+                    submitButton.disabled = true;
+                    setTimeout(() => {
+                        // Redirect test users to the parent dashboard
+                        window.location.href = 'FrontEnd/html-files/dasbboard/dash_pare.html';
+                    }, 1000);
+                    return; // Stop execution to prevent real API call
+                }
+                // --- END SIMULATION CHECK ---
+
                 status.textContent = 'Verifying OTP...';
                 status.style.color = 'var(--color-pending)';
                 submitButton.disabled = true;
 
                 try {
-                    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/verify-otp`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ identifier: identifierInput.value, otp: otpCode })
+                        body: JSON.stringify({ email: identifierInput.value, otp: otpCode })
                     });
                     const data = await response.json();
 
@@ -225,9 +257,9 @@ class AuthModal extends HTMLElement {
                         status.textContent = 'Login successful! Redirecting...';
                         status.style.color = 'var(--color-success)';
                         setTimeout(() => {
-                            if (data.role === 'Parent') window.location.href = 'FrontEnd/html-files/dash_pare.html';
-                            else if (data.role === 'Admin' || data.role === 'Super Admin') window.location.href = 'FrontEnd/html-files/admin.html';
-                            else window.location.href = 'FrontEnd/html-files/dash_pare.html';
+                            if (data.role === 'parent') window.location.href = 'FrontEnd/html-files/dasbboard/dash_pare.html';
+                            else if (data.role === 'admin' || data.role === 'super-admin') window.location.href = 'FrontEnd/html-files/dasbboard/admin.html';
+                            else window.location.href = 'FrontEnd/html-files/dasbboard/dash_pare.html';
                         }, 1000);
                     } else {
                         status.textContent = `Login failed: ${data.msg || 'Invalid or expired OTP.'}`;
@@ -239,36 +271,125 @@ class AuthModal extends HTMLElement {
                 } finally {
                     submitButton.disabled = false;
                 }
-            } else {
-                // --- STEP 1: REQUEST OTP ---
-                status.textContent = 'Requesting OTP...';
+            } else if (passwordGroup.style.display === 'block') {
+                // --- ADMIN/SUPER-ADMIN LOGIN (PASSWORD) ---
+                const passwordInput = this.querySelector('#login-password');
+                status.textContent = 'Logging in...';
                 status.style.color = 'var(--color-pending)';
                 submitButton.disabled = true;
 
                 try {
-                    const response = await fetch(`${API_BASE_URL}/api/auth/otp-request`, {
+                    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ identifier: identifierInput.value, role: selectedRole })
+                        body: JSON.stringify({ email: identifierInput.value, password: passwordInput.value })
                     });
+                    const data = await response.json();
 
                     if (response.ok) {
-                        status.textContent = `An OTP has been sent to ${identifierInput.value}.`;
+                        localStorage.setItem('edupayToken', data.token);
+                        status.textContent = 'Login successful! Redirecting...';
+                        status.style.color = 'var(--color-success)';
+                        setTimeout(() => {
+                            window.location.href = 'FrontEnd/html-files/dasbboard/admin.html';
+                        }, 1000);
+                    } else {
+                        status.textContent = `Login failed: ${data.message || 'Invalid credentials.'}`;
+                        status.style.color = 'var(--color-error)';
+                    }
+                } catch (error) {
+                    status.textContent = 'A network error occurred. Please try again.';
+                    status.style.color = 'var(--color-error)';
+                } finally {
+                    submitButton.disabled = false;
+                }
+
+            } else {
+                // --- STEP 1: ROLE-BASED INITIAL ACTION (OTP for Parent, Email Check for Admin) ---
+                const selectedRole = this.querySelector('.role-btn.active')?.dataset.role;
+                
+                if (selectedRole === 'parent') {
+                    // --- Parent OTP Request ---
+                    const testEmails = ['parent@test.com', 'student@test.com']; // Test emails for simulation
+                    const enteredEmail = identifierInput.value.trim();
+
+                    if (testEmails.includes(enteredEmail)) {
+                        // --- SIMULATED SUCCESS FOR TEST EMAILS ---
+                        status.textContent = `SIMULATION: An OTP has been sent to ${enteredEmail}. (Test OTP is 123456)`;
                         status.style.color = 'var(--color-success)';
                         otpGroup.style.display = 'block';
+                        otpInput.value = '123456'; // Pre-fill for convenience
                         otpInput.focus();
                         submitButton.textContent = 'Verify & Login';
                         identifierInput.readOnly = true;
                     } else {
-                        const error = await response.json();
-                        status.textContent = `Error: ${error.msg || 'User not found or invalid input.'}`;
-                        status.style.color = 'var(--color-error)';
+                        // --- REAL API CALL for non-test emails ---
+                        try {
+                            // For parents, we now use the /login endpoint to request OTP
+                            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    email: identifierInput.value,
+                                    // No password for parent OTP request
+                                })
+                            });
+
+                            status.textContent = 'Requesting OTP...';
+                            status.style.color = 'var(--color-pending)';
+                            submitButton.disabled = true;
+
+                            if (response.ok) {
+                                status.textContent = `An OTP has been sent to ${identifierInput.value}.`;
+                                status.style.color = 'var(--color-success)';
+                                otpGroup.style.display = 'block';
+                                otpInput.focus();
+                                submitButton.textContent = 'Verify & Login';
+                                identifierInput.readOnly = true;
+                            } else {
+                                const error = await response.json();
+                                status.textContent = `Error: ${error.message || 'User not found or invalid input.'}`;
+                                status.style.color = 'var(--color-error)';
+                            }
+                        } catch (error) {
+                            status.textContent = 'A network error occurred. Please check your connection.';
+                            status.style.color = 'var(--color-error)';
+                        } finally {
+                            submitButton.disabled = false;
+                        }
                     }
-                } catch (error) {
-                    status.textContent = 'A network error occurred. Please check your connection.';
-                    status.style.color = 'var(--color-error)';
-                } finally {
-                    submitButton.disabled = false;
+                } else {
+                    // --- Admin Email Validation ---
+                    status.textContent = 'Validating admin email...';
+                    status.style.color = 'var(--color-pending)';
+                    submitButton.disabled = true;
+
+                    try {
+                        // We use the same login endpoint; the backend logic handles it.
+                        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: identifierInput.value })
+                        });
+
+                        if (response.ok) {
+                            status.textContent = 'Admin verified. Please enter your password.';
+                            status.style.color = 'var(--color-success)';
+                            passwordGroup.style.display = 'block';
+                            this.querySelector('#login-password').focus();
+                            submitButton.textContent = 'Login';
+                            identifierInput.readOnly = true;
+                        } else {
+                            const error = await response.json();
+                            status.textContent = `Error: ${error.message || 'This email is not registered as an admin.'}`;
+                            status.style.color = 'var(--color-error)';
+                        }
+                    } catch (error) {
+                        status.textContent = 'A network error occurred. Please try again.';
+                        status.style.color = 'var(--color-error)';
+                    } finally {
+                        submitButton.disabled = false;
+                    }
                 }
             }
         });
@@ -276,6 +397,9 @@ class AuthModal extends HTMLElement {
         this.querySelector('#register-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const status = this.querySelector('#register-status');
+            const name = this.querySelector('#reg-name').value;
+            const email = this.querySelector('#reg-email').value;
+            const phone = this.querySelector('#reg-phone').value;
             status.textContent = 'Submitting your request...';
             status.style.color = 'var(--color-pending)';
             status.style.display = 'block';
@@ -289,13 +413,40 @@ class AuthModal extends HTMLElement {
 
     selectRole(selectedRole) {
         const registerTitle = this.querySelector('#register-title');
+        const otpGroup = this.querySelector('#otp-group');
+        const passwordGroup = this.querySelector('#password-group');
+        const submitButton = this.querySelector('#login-submit-btn');
+        const identifierInput = this.querySelector('#login-identifier');
+        const status = this.querySelector('#login-status');
+        const allFormGroups = this.querySelectorAll('.form-group');
+
         this.querySelectorAll('.role-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.role === selectedRole);
         });
+
+        // Dynamically change the form based on the selected role
+        if (selectedRole === 'parent') {
+            passwordGroup.style.display = 'none';
+            submitButton.textContent = 'Request OTP';
+        } else { // admin or super-admin
+            passwordGroup.style.display = 'none'; // Hide password until email is validated
+            submitButton.textContent = 'Continue';
+        }
+
+        // Reset form state when role changes
+        identifierInput.readOnly = false;
+        identifierInput.value = '';
+        this.querySelector('#otp-code').value = '';
+        this.querySelector('#login-password').value = '';
+        status.style.display = 'none';
+        otpGroup.style.display = 'none'; // Always hide OTP group on role switch
+        passwordGroup.style.display = 'none'; // Always hide password group on role switch
+
+        // Update registration form title
         if (registerTitle) {
             if (selectedRole === 'parent') registerTitle.textContent = 'Request Parent/Student Registration';
             else if (selectedRole === 'admin') registerTitle.textContent = 'Request School Admin Registration';
-            else registerTitle.textContent = 'Request Super Admin Registration';
+            else registerTitle.textContent = 'Request Super Admin Registration'; // super-admin
         }
     }
 

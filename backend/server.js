@@ -17,6 +17,15 @@ app.use(express.json());
 // Enable CORS
 app.use(cors());
 
+// Serve static files.
+// This makes the 'FrontEnd' folder accessible via the browser.
+app.use('/FrontEnd', express.static('../FrontEnd'));
+
+// Route for the homepage
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: '../' });
+});
+
 // Define Routes
 app.use('/api/auth', require('./routes/auth'));
 

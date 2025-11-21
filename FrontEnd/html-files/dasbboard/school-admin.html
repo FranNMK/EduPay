@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Authentication Guard: This script MUST run first to protect the page -->
+    <script src="../../scripts/auth-guard.js"></script>
+
     <title>School Admin Dashboard | EduPay</title>
     <link rel="shortcut icon" href="../../../Assets/Images/logo edu pay.jpg" type="image/x-icon">
     <!-- Load Tailwind CSS -->
@@ -375,11 +378,21 @@
             paymentsTableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4">Loading payments...</td></tr>`;
             noPaymentsMessage.classList.add('hidden');
 
+            // Get the token from localStorage
+            const token = localStorage.getItem('edupayToken');
+            if (!token) {
+                alert('Authentication failed or session expired. Please log in.');
+                window.location.href = '../../../index.html';
+                return;
+            }
+
             try {
                 // We will create this API endpoint next
-                const response = await fetch(`${API_BASE_URL}/api/payments`);
+                const response = await fetch(`${API_BASE_URL}/api/payments`, {
+                    headers: { 'Authorization': `Bearer ${token}` } // Add the token to the request
+                });
                 if (!response.ok) {
-                    throw new Error('Failed to fetch payments.');
+                    throw new Error('Failed to fetch payments. Your session may have expired.');
                 }
                 const payments = await response.json();
 
@@ -563,10 +576,16 @@
             }
 
             try {
+                const token = localStorage.getItem('edupayToken');
+                if (!token) {
+                    throw new Error('Authentication token not found. Please log in again.');
+                }
+
                 const response = await fetch(`${API_BASE_URL}/api/students`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` // Add the token here as well
                     },
                     body: JSON.stringify(newStudent)
                 });
@@ -606,21 +625,22 @@
 
 
         // --- START APPLICATION ---
+        // Hide the main loading spinner and show the dashboard content immediately for a faster perceived load time.
+        userInfo.textContent = `Status: Connected`;
+        loadingIndicator.classList.add('hidden');
+        switchContent('dashboard');
+
         document.addEventListener('DOMContentLoaded', () => {
-            userInfo.textContent = `Status: Connected`;
-            // Hide the main loading spinner
-            loadingIndicator.classList.add('hidden');
-            // Show the dashboard content section by default
-            switchContent('dashboard');
-            // You can load initial data from your backend here if you want
-            // loadDashboardData();
+            // Data loading can still be triggered here to populate the visible dashboard.
+            // For example: loadDashboardData();
         });
 
         // Global logout function
         window.logout = () => {
             if (confirm("Are you sure you want to log out?")) {
-                // In a real app, you would clear tokens/session here
                 console.log("Logging out...");
+                localStorage.removeItem('edupayToken');
+                localStorage.removeItem('userRole');
                 window.location.href = '../../../index.html'; // Redirect to home or login page
             }
         };

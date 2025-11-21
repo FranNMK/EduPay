@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Authentication Guard: This script MUST run first to protect the page -->
+    <script src="../../scripts/auth-guard.js"></script>
+
     <title>Admin Dashboard | EduPay</title>
     <link rel="shortcut icon" href="../../../Assets/Images/logo edu pay.jpg" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -256,6 +259,7 @@
         // Placeholder function for logout
         function logout() {
             localStorage.removeItem('edupayToken');
+            localStorage.removeItem('userRole'); // Also clear the user role
             window.location.href = '../../../index.html';
         }
     </script>

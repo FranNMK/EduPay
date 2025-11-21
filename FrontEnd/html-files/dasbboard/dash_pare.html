@@ -271,6 +271,7 @@
             if (isConfirmed) {
                 console.log("Logging out...");
                 localStorage.removeItem('edupayToken');
+                localStorage.removeItem('userRole');
                 window.location.href = '../../../index.html';
             }
         }
